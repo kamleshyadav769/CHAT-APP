@@ -11,14 +11,7 @@ const sendEmail = async function (email, subject, message) {
         process.env.SMTP_PASSWORD ? "FOUND" : "MISSING"
     );
     console.log("SMTP_FROM_EMAIL:", process.env.SMTP_FROM_EMAIL);
-    import dns from "dns/promises";
-
-    try {
-        const records = await dns.lookup("smtp.gmail.com", { all: true });
-        console.log("SMTP DNS Records:", records);
-    } catch (err) {
-        console.log(err);
-    }
+  
    
     let transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,                        //  "smtp.gmail.com"  ,                                 //
@@ -28,6 +21,9 @@ const sendEmail = async function (email, subject, message) {
         auth: {
             user: process.env.SMTP_USERNAME,
             pass: process.env.SMTP_PASSWORD,
+        },
+        tls: {
+            family: 4,
         },
     });
 
