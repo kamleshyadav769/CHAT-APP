@@ -18,12 +18,17 @@ const sendEmail = async function (email, subject, message) {
         host: "smtp.gmail.com",                          //process.env.SMTP_HOST,   
         // Keeps forcing IPv4 to skip Render's IPv6 issue
        // host: process.env.SMTP_HOST === "smtp.gmail.com" ? "74.125.142.108" : process.env.SMTP_HOST,                     //  "smtp.gmail.com"  ,                                 //
-        port: 465,                  //Number(process.env.SMTP_PORT),                        //465,                    //
-        secure: true,                         // Number(process.env.SMTP_PORT) === 465,             //false,              //true, // true for 465, false for other ports
+        port:587,// 465,                  //Number(process.env.SMTP_PORT),                        //465,                    //
+        secure: false,     //true,                         // Number(process.env.SMTP_PORT) === 465,             //false,              //true, // true for 465, false for other ports
        
         auth: {
             user: process.env.SMTP_USERNAME,
             pass: process.env.SMTP_PASSWORD,
+        },
+        // Force STARTTLS configurations
+        tls: {
+            rejectUnauthorized: false,
+            minVersion: "TLSv1.2"
         },
         // 2. FORCE Node.js to resolve 'smtp.gmail.com' to an IPv4 address safely
         lookup: (hostname, options, callback) => {
