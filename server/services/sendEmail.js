@@ -15,10 +15,10 @@ const sendEmail = async function (email, subject, message) {
   
    
     let transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,   
+        host: "smtp.gmail.com",                          //process.env.SMTP_HOST,   
         // Keeps forcing IPv4 to skip Render's IPv6 issue
        // host: process.env.SMTP_HOST === "smtp.gmail.com" ? "74.125.142.108" : process.env.SMTP_HOST,                     //  "smtp.gmail.com"  ,                                 //
-        port:Number(process.env.SMTP_PORT),                        //465,                    //
+        port: 465,                  //Number(process.env.SMTP_PORT),                        //465,                    //
         secure: true,                         // Number(process.env.SMTP_PORT) === 465,             //false,              //true, // true for 465, false for other ports
        
         auth: {
