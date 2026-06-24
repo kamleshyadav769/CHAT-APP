@@ -28,6 +28,7 @@ const sendEmail = async function (email, subject, message) {
         console.log("✅ SMTP working");
     } catch (err) {
         console.log("❌ ERROR:", err.message);
+        throw err; // stop execution
     }
 
     // send mail with defined transport object
