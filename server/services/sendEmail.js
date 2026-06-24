@@ -17,15 +17,15 @@ const sendEmail = async function (email, subject, message) {
         host: process.env.SMTP_HOST,                        //  "smtp.gmail.com"  ,                                 //
         port:Number(process.env.SMTP_PORT),                        //465,                    //
         secure: Number(process.env.SMTP_PORT) === 465,             //false,              //true, // true for 465, false for other ports
-         
+        family: 4,
         auth: {
             user: process.env.SMTP_USERNAME,
             pass: process.env.SMTP_PASSWORD,
         },
         
-        tls: {
-            family: 4,
-        },
+        
+        
+        
     });
 
     try {
