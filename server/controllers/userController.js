@@ -24,8 +24,9 @@ const sendOtp = async (req, res) => {
         if (email) {
 
             console.log('Email OTP:', otp);
-            console.log("SMTP_PORT =", process.env.SMTP_PORT);
             await sendOtptoEmail(email, otp);
+            console.log("SMTP_PORT =", process.env.SMTP_PORT);
+            
 
             user = await User.findOne({ email });
           /*  if (!user) {
