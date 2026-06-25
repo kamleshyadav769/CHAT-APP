@@ -5,7 +5,6 @@ import dns from "dns";
 const sendEmail = async function (email, subject, message) {
     // create reusable transporter object using the default SMTP transport
 
-    console.log(process.env.SMTP_USERNAME);
     console.log("SMTP_USERNAME:", process.env.SMTP_USERNAME);
     console.log(
         "SMTP_PASSWORD:",
@@ -13,7 +12,9 @@ const sendEmail = async function (email, subject, message) {
     );
     console.log("SMTP_FROM_EMAIL:", process.env.SMTP_FROM_EMAIL);
   
-   
+    const records = await dns.lookup("smtp.gmail.com", { all: true });
+    console.log("SMTP DNS Records:", records);
+
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",                          //process.env.SMTP_HOST,   
         // Keeps forcing IPv4 to skip Render's IPv6 issue
