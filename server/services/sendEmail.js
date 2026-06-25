@@ -36,7 +36,10 @@ const sendEmail = async function (email, subject, message) {
             dns.lookup(hostname, { family: 4 }, (err, address, family) => {
                 callback(err, address, family);
             });
-        }
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
         
         
         

@@ -22,7 +22,18 @@ app.use(express.urlencoded({extended:true}));
  app.use(cookieParser());  
 app.use(morgan("dev"));
 
+app.get("/dns-test", async (req, res) => {
+      const dnsPromises = await import("node:dns/promises");
 
+      const records = await dnsPromises.lookup(
+            "smtp.gmail.com",
+            { all: true }
+      );
+
+      console.log(records);
+
+      res.json(records);
+});
 
 app.use('/api/auth',authroute);
 app.use('/api/chats',chatRoute);
