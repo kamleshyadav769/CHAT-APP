@@ -7,7 +7,7 @@ import morgan from "morgan";
 import authroute from "./routes/userRoute.js";
 import chatRoute from "./routes/chatRoute.js";
 import statusRoute from "./routes/statusRoute.js";
-
+import net from "net";
 
  const app=express();
 
@@ -38,6 +38,31 @@ app.get("/dns-test", async (req, res) => {
       res.json(records);
 });
 
+
+app.get("/smtp-test", (req, res) => {
+
+      const socket = net.createConnection({
+            host: "74.125.68.109",
+            port: 587
+      });
+
+      socket.setTimeout(10000);
+
+      socket.on("connect", () => {
+            res.send("SMTP PORT OPEN");
+            socket.destroy();
+      });
+
+      socket.on("timeout", () => {
+            res.send("SMTP TIMEOUT");
+            socket.destroy();
+      });
+
+      socket.on("error", (err) => {
+            res.send(err.message);
+      });
+
+});
 app.use('/api/auth',authroute);
 app.use('/api/chats',chatRoute);
 app.use('/api/status',statusRoute);
