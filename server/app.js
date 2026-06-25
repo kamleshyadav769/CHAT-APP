@@ -21,6 +21,9 @@ app.use(cors({
 app.use(express.urlencoded({extended:true}));
  app.use(cookieParser());  
 app.use(morgan("dev"));
+app.get("/version", (req, res) => {
+      res.send("DNS TEST VERSION");
+});
 
 app.get("/dns-test", async (req, res) => {
       const dnsPromises = await import("node:dns/promises");
