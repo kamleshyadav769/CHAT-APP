@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-import dns from "dns";
+import dns from "node:dns/promises";
+
 
 // async..await is not allowed in global scope, must use a wrapper
 const sendEmail = async function (email, subject, message) {
@@ -16,7 +17,8 @@ const sendEmail = async function (email, subject, message) {
     console.log("SMTP DNS Records:", records);
 
     let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",                          //process.env.SMTP_HOST,   
+       // host: "smtp.gmail.com",
+        host: "74.125.142.108",                         //process.env.SMTP_HOST,
         // Keeps forcing IPv4 to skip Render's IPv6 issue
        // host: process.env.SMTP_HOST === "smtp.gmail.com" ? "74.125.142.108" : process.env.SMTP_HOST,                     //  "smtp.gmail.com"  ,                                 //
         port:587,// 465,                  //Number(process.env.SMTP_PORT),                        //465,                    //
@@ -28,12 +30,14 @@ const sendEmail = async function (email, subject, message) {
         },
         // Force STARTTLS configurations
         tls: {
+            servername: "smtp.gmail.com",
             rejectUnauthorized: false,
-            minVersion: "TLSv1.2"
+            // minVersion: "TLSv1.2"
         },
         // 2. FORCE Node.js to resolve 'smtp.gmail.com' to an IPv4 address safely
         lookup: (hostname, options, callback) => {
             dns.lookup(hostname, { family: 4 }, (err, address, family) => {
+                console.log("FORCED IPv4:", address, family);
                 callback(err, address, family);
             });
         },
