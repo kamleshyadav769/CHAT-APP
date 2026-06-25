@@ -1,6 +1,7 @@
 import dns from "node:dns";
 
 dns.setDefaultResultOrder("ipv4first");
+console.log("IPv4 FIRST ENABLED");
 
 import { config } from "dotenv";
 config();

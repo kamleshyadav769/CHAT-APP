@@ -44,7 +44,9 @@ app.use('/api/status',statusRoute);
 
 
 
-
+app.get("/", (req, res) => {
+      res.send("SERVER VERSION FB72CE4");
+});
  app.use((req,res)=>{
     res.status(404).send('OOPS! 404 page not found');
  });
