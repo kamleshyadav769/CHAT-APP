@@ -1,5 +1,6 @@
 //import sendEmail from "./sendEmail.js"; this is for nodemailer but in production it is not working because of connection timeout error. So, I have to use brevo api to send email.
-import sendEmail from "./sendBrevoEmail.js"; // this is for brevo api to send email.
+//import sendEmail from "./sendBrevoEmail.js"; // this is for brevo api to send email. acccount creation is rejected by brevo. So, I have to use resend api to send email.
+import sendEmail from "./sendResendEmail.js"; // this is for resend api to send email. acccount creation is rejected by brevo. So, I have to use resend api to send email.
  import { EMAIL_OTP_FORMATE } from "./emailOtpFormate.js";
 
 const sendOtptoEmail=async(email,otp)=>{

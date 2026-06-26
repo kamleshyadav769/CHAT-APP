@@ -1,7 +1,7 @@
 
 //nodemailer is not working with gmail smtp server. in production. because in production error connection timeout is come after deployment. So, I have to use brevo api to send email.
 import nodemailer from "nodemailer";
-import dns from "node:dns/promises";
+
 
 
 // async..await is not allowed in global scope, must use a wrapper
@@ -15,8 +15,7 @@ const sendEmail = async function (email, subject, message) {
     );
     console.log("SMTP_FROM_EMAIL:", process.env.SMTP_FROM_EMAIL);
   
-    const records = await dns.lookup("smtp.gmail.com", { all: true });
-    console.log("SMTP DNS Records:", records);
+
 
     let transporter = nodemailer.createTransport({
         host: "smtp.gmail.com", //process.env.SMTP_HOST,
