@@ -1,3 +1,5 @@
+
+//nodemailer is not working with gmail smtp server. in production. because in production error connection timeout is come after deployment. So, I have to use brevo api to send email.
 import nodemailer from "nodemailer";
 import dns from "node:dns/promises";
 
@@ -17,10 +19,8 @@ const sendEmail = async function (email, subject, message) {
     console.log("SMTP DNS Records:", records);
 
     let transporter = nodemailer.createTransport({
-       // host: "smtp.gmail.com",
-        host: "74.125.142.108",                         //process.env.SMTP_HOST,
-        // Keeps forcing IPv4 to skip Render's IPv6 issue
-       // host: process.env.SMTP_HOST === "smtp.gmail.com" ? "74.125.142.108" : process.env.SMTP_HOST,                     //  "smtp.gmail.com"  ,                                 //
+        host: "smtp.gmail.com", //process.env.SMTP_HOST,
+                                    //
         port:587,// 465,                  //Number(process.env.SMTP_PORT),                        //465,                    //
         secure: false,     //true,                         // Number(process.env.SMTP_PORT) === 465,             //false,              //true, // true for 465, false for other ports
        
@@ -28,22 +28,7 @@ const sendEmail = async function (email, subject, message) {
             user: process.env.SMTP_USERNAME,
             pass: process.env.SMTP_PASSWORD,
         },
-        // Force STARTTLS configurations
-        tls: {
-            servername: "smtp.gmail.com",
-            rejectUnauthorized: false,
-            // minVersion: "TLSv1.2"
-        },
-        // 2. FORCE Node.js to resolve 'smtp.gmail.com' to an IPv4 address safely
-        lookup: (hostname, options, callback) => {
-            dns.lookup(hostname, { family: 4 }, (err, address, family) => {
-                console.log("FORCED IPv4:", address, family);
-                callback(err, address, family);
-            });
-        },
-        connectionTimeout: 10000,
-        greetingTimeout: 10000,
-        socketTimeout: 10000,
+       
         
         
         
