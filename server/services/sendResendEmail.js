@@ -6,7 +6,7 @@ const sendEmail = async function (email, subject, message) {
     try{
     const data = await resend.emails.send({
         from: 'onboarding@resend.dev', 
-        to: email,
+        to: 'yadavkamlesh5251@gmail.com',                   // email, can only send to verified emails in resend account for any email email we have to go with subsription plan of resend. So, I have to use brevo api to send email. acccount creation is rejected by brevo. So, I have to use resend api to send email.
         subject: subject,
         html: message
     });
