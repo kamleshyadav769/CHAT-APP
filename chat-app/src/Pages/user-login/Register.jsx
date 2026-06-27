@@ -50,10 +50,7 @@ const avatars = [
 const Register = () => {
     
     const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
-    console.log("Current step:", step);
-    useEffect(() => {
-        console.log("STATE:", step);
-    }, [step]);
+  
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -143,23 +140,12 @@ const navigate = useNavigate();
              if (user?.username && user?.avatar?.secure_url) {
                     console.log("username", user.username);
                     console.log("avatar", user.avatar?.secure_url);
-                    // setUser(user);
+                     setUser(user);
                     toast.success("welcome back to whatsapp");
                     navigate('/');
                     resetLoginState();
                 } else {
-                  /*  console.log("step3 executed");
-                    console.log("Current step:", step);
-                    setStep(3);
-                    console.log("Current next step:", step);*/
-                 console.log("BEFORE:", useLoginStore.getState().step);
-
-                 await setStep(3);
-
-                 setTimeout(async() => {
-                     
-                     console.log("AFTER:", useLoginStore.getState().step);
-                 }, 0);
+                  setStep(3);
                 }
 
             }
