@@ -28,7 +28,7 @@ const Setting = () => {
         try {
             await logoutUser();
             clearUser();
-            resetLoginState();
+           
             toast.success(" user Logged out successfully");
           
         }

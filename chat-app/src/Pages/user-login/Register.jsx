@@ -137,13 +137,12 @@ const navigate = useNavigate();
                 // ✅ ALWAYS store user
                 setUser(user);
 
-              // if (user?.username && user?.avatar?.secure_url) {
-                if (user.username && user.avatar?.secure_url) {
+             if (user?.username && user?.avatar?.secure_url) {
                     console.log("username", user.username);
                     console.log("avatar", user.avatar?.secure_url);
                     // setUser(user);
                     toast.success("welcome back to whatsapp");
-                    navigate('/user-login');
+                    navigate('/');
                     resetLoginState();
                 } else {
                     console.log("step3 executed");
