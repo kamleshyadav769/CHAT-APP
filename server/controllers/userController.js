@@ -81,7 +81,7 @@ const signin = async function (req, res) {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true,
              secure: true,
-            sameSite: "none",
+           
         };
         res.cookie("auth_token", token, cookieOption);
         return response(res, 200, 'user logged in successfully', { token, user });
@@ -198,7 +198,7 @@ const verifyOtp = async (req, res) => {
         res.cookie("auth_token", token, {
             httpOnly: true,
             secure: true,
-            sameSite: "none",
+          
             maxAge: 365 * 24 * 60 * 60 * 1000
         });
 
