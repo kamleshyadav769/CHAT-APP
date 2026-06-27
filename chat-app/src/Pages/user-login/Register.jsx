@@ -137,8 +137,9 @@ const navigate = useNavigate();
                 // ✅ ALWAYS store user
                 setUser(user);
 
-                if (user?.username && user?.avatar?.secure_url) {
-                    // setUser(user);
+              //  if (user?.username && user?.avatar?.secure_url) {
+                if (user.username && user.avatar?.secure_url) {
+                     setUser(user);
                     toast.success("welcome back to whatsapp");
                     navigate('/');
                     resetLoginState();
@@ -347,6 +348,7 @@ const navigate = useNavigate();
                                 type={showPassword ? "text" : "password"}
                                 {...signInRegister("password")}
                                 placeholder="Password"
+                                onChange={(e) => setPassword(e.target.value)}
                                 className={`w-full bg-transparent focus:outline-none ${theme === "dark" ? "text-white" : "text-black"
                                     }`}
                             />

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Layout from "../../Components/Layout";
 import { FaComment, FaMoon, FaQuestionCircle, FaSearch, FaSignOutAlt, FaUser, FaSun } from "react-icons/fa";
 import useUserStore from "../../Store/useUserStore";
+import useLoginStore from "../../Store/useLoginStore";
 
 
 
@@ -16,6 +17,7 @@ const Setting = () => {
 
     const user = useUserStore((state) => state.user);
     const clearUser = useUserStore((state) => state.clearUser);
+    const resetLoginState = useLoginStore((state) => state.resetLoginState);
 
     const toggleThemeDialog = () => {
         setIsThemeDialogOpen(!isThemeDialogOpen);
@@ -26,6 +28,7 @@ const Setting = () => {
         try {
             await logoutUser();
             clearUser();
+            resetLoginState();
             toast.success(" user Logged out successfully");
           
         }
