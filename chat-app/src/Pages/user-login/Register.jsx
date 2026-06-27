@@ -146,6 +146,7 @@ const navigate = useNavigate();
                     navigate('/user-login');
                     resetLoginState();
                 } else {
+                    console.log("step3 executed");
                     setStep(3);
                 }
 
