@@ -68,8 +68,8 @@ const signin = async function (req, res) {
     try {
         const user = await User.findOne({ email }).select('+password');
         console.log("User found:", user);
-        //if(!user||user.password !== password){//COMPARING PLAIN TEXT WITH PLAIN TEXT
-        if (!user || !(await bcrypt.compare(password, user.password))) {//COMPARING PLAIN TEXT WITH ENCRYPTED DATA
+        if(!user||user.password !== password){//COMPARING PLAIN TEXT WITH PLAIN TEXT
+       // if (!user || !(await bcrypt.compare(password, user.password))) {//COMPARING PLAIN TEXT WITH ENCRYPTED DATA
             return response(res, 400, 'invalid credentials');
         }
         const token = user.jwtToken();
