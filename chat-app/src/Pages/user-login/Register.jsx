@@ -48,8 +48,8 @@ const avatars = [
 
 
 const Register = () => {
-
-    const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
+    const step = useLoginStore((state) => state.step);
+    const {  setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
     console.log("Current step:", step);
     useEffect(() => {
         console.log("STATE:", step);
