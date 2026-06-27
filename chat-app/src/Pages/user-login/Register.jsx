@@ -146,8 +146,9 @@ const navigate = useNavigate();
                     resetLoginState();
                 } else {
                   setStep(3);
-                 setUser(user);
+                
                 }
+                setUser(user);
 
             }
         } catch (error) {
