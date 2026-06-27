@@ -179,7 +179,7 @@ const navigate = useNavigate();
             } else {
                 formData.append("profilePicture", selectedAvatar);
             }
-            //setUser(formData);
+            setUser(data);
            // await updateUserProfile(formData);
             const res = await updateUserProfile(formData);
 
