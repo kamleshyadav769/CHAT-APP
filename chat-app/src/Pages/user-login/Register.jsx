@@ -48,8 +48,8 @@ const avatars = [
 
 
 const Register = () => {
-    const step = useLoginStore((state) => state.step);
-    const {  setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
+    
+    const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
     console.log("Current step:", step);
     useEffect(() => {
         console.log("STATE:", step);
@@ -154,7 +154,7 @@ const navigate = useNavigate();
                     console.log("Current next step:", step);*/
                  console.log("BEFORE:", useLoginStore.getState().step);
 
-                 setStep(3);
+                await setStep(3);
 
                  setTimeout(() => {
                      console.log("AFTER:", useLoginStore.getState().step);
