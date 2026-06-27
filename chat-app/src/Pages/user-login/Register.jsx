@@ -136,7 +136,7 @@ const navigate = useNavigate();
                 const user = response.data?.user;
                 // ✅ ALWAYS store user
                 setUser(user);
-
+               setStep(3);
              if (user?.username && user?.avatar?.secure_url) {
                     console.log("username", user.username);
                     console.log("avatar", user.avatar?.secure_url);

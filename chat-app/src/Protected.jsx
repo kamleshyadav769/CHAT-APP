@@ -46,13 +46,7 @@ const ProtectedRoute = () => {
 
 const PublicRoute = () => {
     const isAuthenticated = useUserStore(state => state.isAuthenticated);
-    const [ready, setReady] = useState(false);
-
-    useEffect(() => {
-        setReady(true);
-    }, []);
-
-    if (!ready) return null;
+    
     if (isAuthenticated) {
         return <Navigate to='/' replace />
     }
