@@ -154,9 +154,10 @@ const navigate = useNavigate();
                     console.log("Current next step:", step);*/
                  console.log("BEFORE:", useLoginStore.getState().step);
 
-                await setStep(3);
+             
 
-                 setTimeout(() => {
+                 setTimeout(async() => {
+                     await setStep(3);
                      console.log("AFTER:", useLoginStore.getState().step);
                  }, 0);
                 }
