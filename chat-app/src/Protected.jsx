@@ -10,13 +10,10 @@ const ProtectedRoute = () => {
     const [isChecking, setIsChecking] = useState(true);
     const { isAuthenticated, setUser, clearUser } = useUserStore();
 
-    const publicPaths = ["/user-login"];
+
     useEffect(() => {
-        // ✅ SKIP AUTH CHECK ON PUBLIC ROUTES
-        if (publicPaths.includes(location.pathname)) {
-            setIsChecking(false);
-            return;
-        }
+       
+       
         const verifyAuth = async () => {
             try {
                 const result = await getUserProfile();
@@ -35,7 +32,7 @@ const ProtectedRoute = () => {
         }
         verifyAuth();
 
-    }, [setUser, clearUser, location.pathname, publicPaths])
+    }, [setUser, clearUser])
 
     if (isChecking) {
         return <Loader />
