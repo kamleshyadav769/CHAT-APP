@@ -47,7 +47,7 @@ const{setCurrentUser,initsocketListeners,cleanup}=useChatStore();
             <Route path='/user-login' element={<Register />} />
        </Route> */}
           {/* AUTH FLOW */}
-          <Route path="/user-login" element={<AuthRoute />}>
+          <Route path="/user-login" element={<PublicRoute />}>
             <Route index element={<Register />} />
           </Route>
        <Route element={<ProtectedRoute/>}>
