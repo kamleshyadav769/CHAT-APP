@@ -145,7 +145,9 @@ const navigate = useNavigate();
                     navigate('/');
                     resetLoginState();
                 } else {
+                 setUser(user); 
                   setStep(3);
+
                 }
 
             }
