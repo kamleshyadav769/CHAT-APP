@@ -36,8 +36,8 @@ const ProtectedRoute = () => {
         return <Loader />
     }
     if (!isAuthenticated) {
-      //  return <Navigate to="/user-login" state={{ from: location }} replace />
-        return <Navigate to="/user-login" state={{ from: location }} />
+        return <Navigate to="/user-login" state={{ from: location }} replace />
+        
     }
 
     //user is authenticated then render the protected route
@@ -46,6 +46,13 @@ const ProtectedRoute = () => {
 
 const PublicRoute = () => {
     const isAuthenticated = useUserStore(state => state.isAuthenticated);
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        setReady(true);
+    }, []);
+
+    if (!ready) return null;
     if (isAuthenticated) {
         return <Navigate to='/' replace />
     }
