@@ -48,8 +48,9 @@ const avatars = [
 
 
 const Register = () => {
-    const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
 
+    const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
+    console.log("Current step:", step);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -109,8 +110,6 @@ const navigate = useNavigate();
                     toast.info("Account created successfully");
                     setUserPhoneData({ email, password, confirmPassword });
                     setStep(2);
-
-               
             }
         } catch (error) {
             console.log(error);
@@ -127,7 +126,8 @@ const navigate = useNavigate();
                 throw new Error("phone or email data is missing");
             }
           
-            const response = await signIn(email, password);
+            const response = await signIn(UserPhoneData.email,
+                UserPhoneData.password );
             if (response.status === "success") {
                 toast.success("Signed in successfully");
 
@@ -147,7 +147,9 @@ const navigate = useNavigate();
                     resetLoginState();
                 } else {
                     console.log("step3 executed");
+                    console.log("Current step:", step);
                     setStep(3);
+                    console.log("Current next step:", step);
                 }
 
             }
