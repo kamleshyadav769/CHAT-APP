@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../Store/useUserStore";
@@ -51,6 +51,9 @@ const Register = () => {
 
     const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
     console.log("Current step:", step);
+    useEffect(() => {
+        console.log("STATE:", step);
+    }, [step]);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -136,7 +139,7 @@ const navigate = useNavigate();
                 const user = response.data?.user;
                 // ✅ ALWAYS store user
                 setUser(user);
-               setStep(3);
+            
              if (user?.username && user?.avatar?.secure_url) {
                     console.log("username", user.username);
                     console.log("avatar", user.avatar?.secure_url);
@@ -149,6 +152,7 @@ const navigate = useNavigate();
                     console.log("Current step:", step);
                     setStep(3);
                     console.log("Current next step:", step);
+           
                 }
 
             }
@@ -158,7 +162,7 @@ const navigate = useNavigate();
         } finally {
             setLoading(false); // THIS FIXES YOUR ISSUE
         }
-    }
+    }   
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
