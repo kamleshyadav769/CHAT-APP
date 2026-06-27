@@ -104,7 +104,7 @@ const navigate = useNavigate();
 
             setLoading(true);
           
-                const response = await signUp({ email, password, confirmPassword });
+                const response = await signUp( email, password, confirmPassword );
                 if (response.status === "success") {
                     toast.info("Account created successfully");
                     setUserPhoneData({ email, password, confirmPassword });
@@ -127,7 +127,7 @@ const navigate = useNavigate();
                 throw new Error("phone or email data is missing");
             }
           
-            const response = await signIn({ email: UserPhoneData.email, password: UserPhoneData.password });
+            const response = await signIn(email, password);
             if (response.status === "success") {
                 toast.success("Signed in successfully");
 
