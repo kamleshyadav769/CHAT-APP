@@ -88,6 +88,7 @@ const getUserProfile = async () => {
 const logoutUser = async () => {
     try {
         const response = await axoisInstance.get("/auth/logout");
+        console.log("logoutresponse", response.data);
         return response.data;
     } catch (error) {
         throw error.response ? error.response.data : error.message;
