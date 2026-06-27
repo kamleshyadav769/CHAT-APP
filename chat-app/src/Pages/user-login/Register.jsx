@@ -148,11 +148,17 @@ const navigate = useNavigate();
                     navigate('/');
                     resetLoginState();
                 } else {
-                    console.log("step3 executed");
+                  /*  console.log("step3 executed");
                     console.log("Current step:", step);
                     setStep(3);
-                    console.log("Current next step:", step);
-           
+                    console.log("Current next step:", step);*/
+                 console.log("BEFORE:", useLoginStore.getState().step);
+
+                 setStep(3);
+
+                 setTimeout(() => {
+                     console.log("AFTER:", useLoginStore.getState().step);
+                 }, 0);
                 }
 
             }
