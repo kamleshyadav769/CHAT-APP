@@ -138,7 +138,7 @@ const navigate = useNavigate();
                 console.log("USER EXTRACTED:", response.data?.user);
                 const user = response.data?.user;
                 // ✅ ALWAYS store user
-                setUser(user);
+               // setUser(user);
             
              if (user?.username && user?.avatar?.secure_url) {
                     console.log("username", user.username);
@@ -154,10 +154,10 @@ const navigate = useNavigate();
                     console.log("Current next step:", step);*/
                  console.log("BEFORE:", useLoginStore.getState().step);
 
-             
+                 await setStep(3);
 
                  setTimeout(async() => {
-                     await setStep(3);
+                     
                      console.log("AFTER:", useLoginStore.getState().step);
                  }, 0);
                 }
