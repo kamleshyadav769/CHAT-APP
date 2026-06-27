@@ -4,7 +4,8 @@ import './App.css'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import Login from './Pages/user-login/Login'
+//import Login from './Pages/user-login/Login'
+import Register from './Pages/user-login/Register'
 import { ProtectedRoute, PublicRoute } from './Protected'
 import HomePage from './Components/HomePage'
 import useUserStore from './Store/useUserStore'
@@ -43,7 +44,7 @@ const{setCurrentUser,initsocketListeners,cleanup}=useChatStore();
     <Router>
       <Routes>
        <Route element={<PublicRoute/>}>
-            <Route path='/user-login' element={<Login />} />
+            <Route path='/user-login' element={<Register />} />
        </Route>
        <Route element={<ProtectedRoute/>}>
         <Route path='/' element={<HomePage/>}/>

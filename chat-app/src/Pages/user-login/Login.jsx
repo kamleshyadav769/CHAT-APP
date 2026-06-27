@@ -131,7 +131,7 @@ const Login = () => {
     )
 
     const onLoginSubmit = async () => {
-        console.log("API CALL TRIGGERED");
+       // console.log("API CALL TRIGGERED");
         try {
 
             setLoading(true);

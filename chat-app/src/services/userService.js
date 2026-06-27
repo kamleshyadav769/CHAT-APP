@@ -1,4 +1,32 @@
 import axoisInstance from "./urlService"
+const signUp = async ( email,password,confirmPassword) => {
+    try {
+        const response = await axoisInstance.post("/auth/signup", {
+            email,
+            password,
+            confirmPassword
+        });
+        return response.data;
+
+    } catch (error) {
+        throw error.response ? error.response.data : error.message;
+    }
+}
+const signIn = async (email, password) => {
+    try {
+        const response = await axoisInstance.post("/auth/signin", {
+            email,
+            password
+        });
+        return response.data;
+
+    } catch (error) {
+        throw error.response ? error.response.data : error.message;
+    }
+}
+
+
+
 
 const sendOtp=async (phoneNumber,phonesuffix,email)=>{
 try{
@@ -77,4 +105,4 @@ const getAllUsers = async () => {
 }
 
 
-export{sendOtp, verifyOtp, updateUserProfile, getUserProfile, logoutUser, getAllUsers};
+export{signUp, signIn,sendOtp, verifyOtp, updateUserProfile, getUserProfile, logoutUser, getAllUsers};
