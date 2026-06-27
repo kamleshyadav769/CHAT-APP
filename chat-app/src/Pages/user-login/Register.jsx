@@ -146,7 +146,7 @@ const navigate = useNavigate();
                     resetLoginState();
                 } else {
                   setStep(3);
-
+                 setUser(user);
                 }
 
             }
@@ -178,7 +178,7 @@ const navigate = useNavigate();
             } else {
                 formData.append("profilePicture", selectedAvatar);
             }
-            setUser(data);
+            setUser(formData);
             await updateUserProfile(formData);
            
             toast.success("welcome back to what's app");
