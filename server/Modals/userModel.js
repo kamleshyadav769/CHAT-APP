@@ -15,8 +15,16 @@ const userSchema = new Schema({
         trim: true,
         match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please provide a valid email address"]
     },
-
-
+    password: {
+        type: String,
+        required: true,
+        minlength: [8, "Password must be at least 8 characters long"]
+    },
+    confirmPassword: {
+        type: String,
+        required: true,
+        minlength: [8, "Confirm Password must be at least 8 characters long"]
+    },
     avatar: {
         public_id: {
             type: String,

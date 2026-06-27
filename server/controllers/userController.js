@@ -2,6 +2,8 @@ import cloudinary from "cloudinary";
 import fs from 'fs/promises';
 
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+//import emailValidator from "email-validator";
 
 import User from "../Modals/userModel.js";
 import sendOtptoEmail from "../services/emailServices.js";
@@ -11,6 +13,82 @@ import response from "../utils/resposeHandler.js";
 import generateToken from "../utils/generateToken.js";
 import  Conversation from "../Modals/conversation.js";
 
+//const bcrypt = require('bcrypt')//MODULE FOR ENCRYPTED DATA
+//const userModel = require("../database/userschema");
+const signup = async function (req, res, next) {
+    const {  email, password, confirmPassword } = req.body;
+    console.log( email, password, confirmPassword);
+
+    if ( !email || !password || !confirmPassword) {
+        return response(res, 400, 'every field is required');
+       
+    }
+  
+    // const validemail = emailValidator.validate(email);
+    // if (!validemail) {
+    //     return response(res, 400, 'Please provide a valid email id');
+    // }
+
+    // checking user dwara diya gya password aur conformpassword  nhi hai to ye execute hoga
+    if (password !== confirmPassword) {
+        return response(res, 400, 'password and confirmPassword do not match');
+       
+    }
+
+
+    try {
+        const userInfo = new User(req.body);
+        const result = await userInfo.save();
+        return response(res, 200, 'user created successfully', result);
+    } catch (err) {
+    return response(res, 400, err.message);
+       
+    }
+}
+
+
+//CREATING SIGNIN (LOGIN) FUNCTION FOR USER 
+/*1 what type of input it takes form user (EMAIL AND PASSWORD)
+2 validation (checking user koi input dena bhul to nhi gya) 
+
+
+
+
+
+
+*/
+const signin = async function (req, res) {
+    //taking input from user ( why we we curly bracket{} because it is used to import variable (take input)
+    //from the user
+    const { email, password } = req.body;
+    // checking user  password aur email me se koi ek bhi nhi diya hai to ye execute hoga
+    if (!email || !password) {
+        return response(res, 400, 'every field is mandatory');
+    }
+    try {
+        const user = await User.findOne({ email }).select('+password');
+        //if(!user||user.password !== password){//COMPARING PLAIN TEXT WITH PLAIN TEXT
+        if (!user || !(await bcrypt.compare(password, user.password))) {//COMPARING PLAIN TEXT WITH ENCRYPTED DATA
+            return response(res, 400, 'invalid credentials');
+        }
+        const token = user.jwtToken();
+        user.password = undefined;
+        //  user.confirmpassword = undefined;
+        const cookieOption = {
+            maxAge: 24 * 60 * 60 * 1000,
+            httpOnly: true,
+             secure: true,
+            sameSite: "none",
+        };
+        res.cookie("auth_token", token, cookieOption);
+        return response(res, 200, 'user logged in successfully', { token, user });
+      
+    } catch (e) {
+        return response(res, 400, e.message);
+      
+    }
+}
+
 
 const sendOtp = async (req, res) => {
     const { phoneNumber, phonesuffix, email } = req.body;
@@ -19,7 +97,6 @@ const sendOtp = async (req, res) => {
 
     try {
         let user;
-
         // EMAIL FLOW ✅
         if (email) {
 
@@ -262,4 +339,4 @@ return response(res,200,'all users retrieved successfully',userWithConversation)
     }
 }
 
-export { sendOtp, verifyOtp ,updateProfile,logout,getProfile,getAllUsers};
+export {signup,signin, sendOtp, verifyOtp ,updateProfile,logout,getProfile,getAllUsers};
