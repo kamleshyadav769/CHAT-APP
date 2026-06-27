@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useUserStore } from "../../store/userStore";
+import useUserStore from "../../Store/useUserStore";
+
 import { usethemeStore } from "../../store/themeStore";
 import { FaArrowLeft, FaChevronDown, FaPlus, FaUser, FaWhatsapp, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
