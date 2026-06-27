@@ -37,7 +37,8 @@ const signup = async function (req, res, next) {
 
 
     try {
-        const userInfo = new User(req.body);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const userInfo = new User({ ...req.body, password: hashedPassword });
         const result = await userInfo.save();
         return response(res, 200, 'user created successfully', result);
     } catch (err) {
@@ -69,10 +70,11 @@ const signin = async function (req, res) {
         const user = await User.findOne({ email }).select('+password');
         console.log("User found:", user);
         if(!user||user.password !== password){//COMPARING PLAIN TEXT WITH PLAIN TEXT
-       // if (!user || !(await bcrypt.compare(password, user.password))) {//COMPARING PLAIN TEXT WITH ENCRYPTED DATA
+       //if (!user || !(await bcrypt.compare(password, user.password))) {//COMPARING PLAIN TEXT WITH ENCRYPTED DATA
             return response(res, 400, 'invalid credentials');
         }
-        const token = user.jwtToken();
+        const token = generateToken(user._id);
+    
         user.password = undefined;
         //  user.confirmpassword = undefined;
         const cookieOption = {
