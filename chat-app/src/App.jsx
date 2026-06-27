@@ -43,9 +43,13 @@ const{setCurrentUser,initsocketListeners,cleanup}=useChatStore();
     <ToastContainer position='top-right' autoClose={3000}/>
     <Router>
       <Routes>
-       <Route element={<PublicRoute/>}>
+       {/* <Route element={<PublicRoute/>}>
             <Route path='/user-login' element={<Register />} />
-       </Route>
+       </Route> */}
+          {/* AUTH FLOW */}
+          <Route path="/user-login" element={<AuthRoute />}>
+            <Route index element={<Register />} />
+          </Route>
        <Route element={<ProtectedRoute/>}>
         <Route path='/' element={<HomePage/>}/>
         <Route path="/setting" element={<Setting/>}/>
