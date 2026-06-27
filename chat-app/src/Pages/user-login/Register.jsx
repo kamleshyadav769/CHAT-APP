@@ -148,7 +148,7 @@ const navigate = useNavigate();
                   setStep(3);
                 
                 }
-                setUser(user);
+              //  setUser(user);
 
             }
         } catch (error) {
@@ -179,9 +179,13 @@ const navigate = useNavigate();
             } else {
                 formData.append("profilePicture", selectedAvatar);
             }
-            setUser(formData);
-            await updateUserProfile(formData);
-           
+            //setUser(formData);
+           // await updateUserProfile(formData);
+            const res = await updateUserProfile(formData);
+
+            const updatedUser = res?.data?.user || res?.user;
+
+            setUser(updatedUser);   // ✅ FINAL AUTH SET HERE
             toast.success("welcome back to what's app");
             navigate('/');
             resetLoginState();
