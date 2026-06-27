@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../Store/useUserStore";
 
-import { usethemeStore } from "../../store/themeStore";
+import usethemeStore  from "../../store/themeStore";
 import { FaArrowLeft, FaChevronDown, FaPlus, FaUser, FaWhatsapp, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { signUp, signIn, updateUserProfile } from "../../services/userService";
