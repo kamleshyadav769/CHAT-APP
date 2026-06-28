@@ -126,8 +126,8 @@ const navigate = useNavigate();
                 throw new Error("phone or email data is missing");
             }
           
-            const response = await signIn(UserPhoneData?.email,
-                UserPhoneData?.password );
+            const response = await signIn(email,
+                UserPhoneData );
             if (response.status === "success") {
                 toast.success("Signed in successfully");
 
