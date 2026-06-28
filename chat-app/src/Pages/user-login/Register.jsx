@@ -119,15 +119,15 @@ const navigate = useNavigate();
         }
     }
 
-    const onSignInSubmit = async () => {
+    const onSignInSubmit = async (data) => {
         try {
             setLoading(true);
             // if (!UserPhoneData) {
             //     throw new Error("phone or email data is missing");
             // }
           
-            const response = await signIn(email,
-                password );
+            const response = await signIn(data.email,
+                data.password );
             if (response.status === "success") {
                 toast.success("Signed in successfully");
 
@@ -320,7 +320,19 @@ const navigate = useNavigate();
                                                     className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
                                                     {loading ? <Spinner /> : "Register"}
                                                 </button>
-                        
+                        <p
+                            className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                                }`}
+                        >
+                            Already have an account?{" "}
+                            <button
+                                type="button"
+                                onClick={() => setStep(2)}
+                                className="text-green-500 hover:underline font-semibold"
+                            >
+                                Login
+                            </button>
+                        </p>
                     </form>
                 )}
                 {step === 2 && (
