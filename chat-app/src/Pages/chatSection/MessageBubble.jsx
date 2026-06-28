@@ -28,6 +28,7 @@ const messageRef=useRef(null);
     const quickReactions = ["👍", "❤️", "😂", "😮", "😢", "🙏"];
     //console.log("emoji",quickReactions);
     console.log("messagestatus", message.messageStatus)
+    console.log("message mediaurl",message.mediaUrl);
 
     const handleReact=(emoji)=>{
         onReact(message._id,emoji)
