@@ -166,7 +166,11 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
 
     }, {}) : {};
 
-    console.log("groupedMessages",groupedMessages);
+   groupedMessages.map((msgs)=>(
+    
+       console.log("groupedMessages",  msgs.filter(
+            msg => msg.conversation === selectedContact?.conversation?._id
+        ))));
 
 
 
