@@ -57,7 +57,7 @@ const messageRef=useRef(null);
                     {message.contentType==="text"&& <p className="mr-2">{message.content}</p>}
                     {message.contentType === "image" && (
                         <div>
-                            <img src={message.imageOrVideoUrl}
+                            <img src={message.mediaUrl}
                              alt="image-video"
                              className="rounded-lg max-w-xs" />
                             <p className="mt-1">{message.content}</p>

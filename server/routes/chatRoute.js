@@ -8,7 +8,7 @@ import { sendMessage, getConversations, getMessages, markAsRead, deleteMessage }
 
 const router = express.Router();
 
-router.post('/send-message',authMiddleware,upload.single("imageOrVideo"), sendMessage);
+router.post('/send-message',authMiddleware,upload.single("media"), sendMessage);
 router.get('/conversations', authMiddleware, getConversations);
 router.get('/conversations/:conversationId/messages', authMiddleware, getMessages);
 router.put('/messages/read', authMiddleware, markAsRead);

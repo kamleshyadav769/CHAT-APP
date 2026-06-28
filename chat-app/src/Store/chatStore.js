@@ -205,9 +205,15 @@ markMessagesAsRead();
                 sender:{_id:senderId},
                 receiver:{_id:receiverId},
                 conversation:conversationId,
-                imageOrVideoUrl:media&& typeof media !== "string" ? URL.createObjectURL(media):null,
+                mediaUrl:media&& typeof media !== "string" ? URL.createObjectURL(media):null,
                 content:content,
-                conntentType:media? media.type.startsWith("image")?"image":"video":"text",
+              //  contentType:media? media.type.startsWith("image")?"image":"video":"text",
+                contentType:
+                    media?.type?.startsWith("image")
+                        ? "image"
+                        : media?.type?.startsWith("video")
+                            ? "video"
+                            : "text",
                createdAt:new Date().toISOString(),
                messageStatus:messageStatus
             };

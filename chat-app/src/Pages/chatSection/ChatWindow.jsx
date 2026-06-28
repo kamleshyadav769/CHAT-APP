@@ -107,7 +107,7 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
             //if there's a file to send, append it to formData
 
             if (selectedFile) {
-                formData.append("media", selectedFile.name);
+                formData.append("media", selectedFile);
             }
 
             if (!message.trim() && !selectedFile) {

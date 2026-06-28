@@ -18,7 +18,7 @@ const sendMessage = async (req, res) => {
             await conversation.save();
         }
 
-let imageOrvideoUrl=null;
+let mediaUrl=null;
 let contentType=null;
          // Run only if user sends a file
             if (req.file) {
@@ -37,7 +37,7 @@ let contentType=null;
                         /*user.avatar.public_id = result.public_id;
                         user.avatar.secure_url = result.secure_url;*/
 
-                        imageOrvideoUrl=result.secure_url;
+                       mediaUrl=result.secure_url;
 
                         if(req.file.mimetype.startsWith('image')){
                             contentType='image';
@@ -69,7 +69,7 @@ let contentType=null;
             sender: senderId,
            receiver: receiverId,
             content,
-            imageOrvideoUrl,
+           mediaUrl,
             contentType,
             messageStatus
         });
