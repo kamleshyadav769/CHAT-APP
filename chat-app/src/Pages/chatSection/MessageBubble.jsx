@@ -7,6 +7,7 @@ import EmojiPicker from 'emoji-picker-react';
 import useOutSideClick from "../../hooks/useOutSideClick";
 
 
+
 const MessageBubble = ({ message, theme, currentUser, onReact, deleteMessage }) => {
 
 const[showEmojiPicker,setShowEmojiPicker]=useState(false);
@@ -46,7 +47,8 @@ const messageRef=useRef(null);
         if (showOptions) setShowOptions(false);
     })
 
-    if(message===0)return;
+    // if(message===0)return;
+    if (!message) return null;
 
     return(
         <div className={`chat ${bubbleClass}  ${message.reactions?.length > 0 ? "mb-5" : ""
