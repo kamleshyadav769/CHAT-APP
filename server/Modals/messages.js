@@ -22,7 +22,7 @@ const messageSchema= new mongoose.Schema({
 
     },
 
-    imageOrvideoUrl:{
+    mediaUrl:{
         type:String,
 
     },
