@@ -122,9 +122,9 @@ const navigate = useNavigate();
     const onSignInSubmit = async () => {
         try {
             setLoading(true);
-            if (!UserPhoneData) {
-                throw new Error("phone or email data is missing");
-            }
+            // if (!UserPhoneData) {
+            //     throw new Error("phone or email data is missing");
+            // }
           
             const response = await signIn(email,
                 password );
