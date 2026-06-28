@@ -127,7 +127,7 @@ const navigate = useNavigate();
             }
           
             const response = await signIn(email,
-                UserPhoneData );
+                password );
             if (response.status === "success") {
                 toast.success("Signed in successfully");
 
