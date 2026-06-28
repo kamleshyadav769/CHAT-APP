@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form";
-import { useState ,useEffect} from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../Store/useUserStore";
@@ -320,6 +320,7 @@ const navigate = useNavigate();
                                                     className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
                                                     {loading ? <Spinner /> : "Register"}
                                                 </button>
+                        <div className="mt-6 text-center">
                         <p
                             className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"
                                 }`}
@@ -333,6 +334,7 @@ const navigate = useNavigate();
                                 Login
                             </button>
                         </p>
+                        </div>
                     </form>
                 )}
                 {step === 2 && (
@@ -396,6 +398,23 @@ const navigate = useNavigate();
                                                     className="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600 transition">
                                                     {loading ? <Spinner /> : "login"}
                                                 </button>
+                        <div className="mt-6 text-center">
+                            <p
+                                className={`text-sm font-medium ${theme === "dark"
+                                        ? "text-gray-400"
+                                        : "text-gray-600"
+                                    }`}
+                            >
+                                Don't have an account?{" "}
+                                <button
+                                    type="button"
+                                    onClick={() => setStep(1)}
+                                    className="font-semibold text-green-500 hover:text-green-600 hover:underline transition-colors duration-200"
+                                >
+                                    Sign Up
+                                </button>
+                            </p>
+                        </div>
                     </form>
                 )}
                
