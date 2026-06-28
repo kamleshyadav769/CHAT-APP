@@ -102,7 +102,7 @@ if(message?.content){
 
     }catch (error) {
         console.error('sendMessage  Error:', error);
-        return response(res, 500, 'Internal server error');
+        return response(res, 500, 'Internal server error',error);
     }
 
 
