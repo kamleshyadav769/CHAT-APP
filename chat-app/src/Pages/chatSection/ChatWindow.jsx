@@ -166,6 +166,8 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
 
     }, {}) : {};
 
+    console.log("groupedMessages",groupedMessages);
+
 
 
     const handleReaction = (messageId, emoji) => {
