@@ -198,7 +198,7 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
 
 
     //console.log("profilepictur", selectedContact.avatar.secure_url)
-    console.log("messages", selectedContact?.conversation?._id)
+   // console.log("messages", selectedContact?.conversation?._id)
 
     return (<div className="flex-1 h-screen w-full flex flex-col" >
         <div className={`p-4 ${theme === "dark" ? "bg-[#303430] text-white" : "bg-[rgb(239,242,245)] text-gray-600"} flex items-center`}>

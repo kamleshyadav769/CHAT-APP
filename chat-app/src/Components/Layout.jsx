@@ -59,7 +59,7 @@ const Layout = ({ children, isThemeDialogOpen, toggleThemeDialog, isStatusPrevie
             </div>
             {isMobile && <Sidebar />}
             {isThemeDialogOpen && (
-                <div className="fixed insert-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className={`${theme == "dark" ? "bg-[#202c33] text-white" : "bg-white text-black"} p-6 rounded-lg max-w-sm w-full `}>
                         <h2 className="text-2xl font-semibold mb-4">
                             Choose a theme
