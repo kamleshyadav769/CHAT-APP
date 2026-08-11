@@ -205,6 +205,7 @@ const verifyOtp = async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "none",
+            path: "/",
             maxAge: 365 * 24 * 60 * 60 * 1000
         });
 
@@ -297,6 +298,7 @@ const logout = (req, res) => {
             maxAge: 0,
             httpOnly: true,
             sameSite: "none",
+            path: "/",
         });
 
 
