@@ -6,7 +6,10 @@ const useLoginStore = create(
     (set) => ({
         step: 1,
         UserPhoneData: null,
-        setStep: (step) => set({ step }),
+        setStep: (step) =>{
+          console.log("SET STEP CALLED:", step);
+          set({ step })
+        },
         setUserPhoneData: (data) => set({ UserPhoneData: data }),
       //  resetLoginState: () => set({ step: 1, UserPhoneData: null }),
       resetLoginState: () => set({ step: 1, UserPhoneData: null }),
