@@ -236,7 +236,7 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
             {Object.entries(groupedMessages).map(([date, msgs]) => (
                 <React.Fragment key={date}>
                     {renderDateSeparator(new Date(date))}
-                    {/* {msgs.filter(
+                     {msgs.filter(
                         msg => msg.conversation === selectedContact?.conversation?._id
                     ).map((msg) => (
                        
@@ -248,18 +248,9 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
                        onReact={handleReaction}
                        deleteMessage={deleteMessage}
                         />
-                    ))} */}
+                    ))} 
 
-                    {msgs.map((msg) => (
-                        <MessageBubble
-                            key={msg._id}
-                            message={msg}
-                            theme={theme}
-                            currentUser={user}
-                            onReact={handleReaction}
-                            deleteMessage={deleteMessage}
-                        />
-                    ))}
+                    
                     
                     
                     
