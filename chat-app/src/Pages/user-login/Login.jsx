@@ -69,7 +69,7 @@ const avatars = [
 
 const Login = () => {
     const { step, setStep, UserPhoneData, setUserPhoneData, resetLoginState } = useLoginStore();
-
+    console.log("CURRENT LOGIN STEP:", step);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [selectedCountry, setSelectedCountry] = useState(countries[0]); // Default to the first country in the list
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -77,7 +77,7 @@ const Login = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedAvatar, setSelectedAvatar] = useState(avatars);
+    const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
     const [profilePictureFile, setProfilePictureFile] = useState(null);
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -160,7 +160,7 @@ const Login = () => {
         }
     }
 
-    const onOtpSubmit = async () => {
+    /*const onOtpSubmit = async () => {
         try {
             setLoading(true);
             if (!UserPhoneData) {
@@ -207,7 +207,77 @@ const Login = () => {
             setProfilePicture(URL.createObjectURL(file));
 
         }
-    }
+    }*/
+    const onOtpSubmit = async () => {
+        try {
+            setLoading(true);
+
+            if (!UserPhoneData) {
+                throw new Error("Phone or email data is missing");
+            }
+
+            const otpString = otp.join("");
+
+            let response;
+
+            if (UserPhoneData?.email) {
+                response = await verifyOtp(
+                    null,
+                    null,
+                    UserPhoneData.email,
+                    otpString
+                );
+            } else {
+                response = await verifyOtp(
+                    UserPhoneData.phoneNumber,
+                    UserPhoneData.phonesuffix,
+                    null,
+                    otpString
+                );
+            }
+
+            console.log("FULL RESPONSE:", response);
+
+            if (response?.status === "success") {
+
+                const user = response?.data?.user;
+
+                console.log("USER:", user);
+                console.log("USERNAME:", user?.username);
+                console.log("AVATAR:", user?.avatar);
+                console.log(
+                    "PROFILE COMPLETE:",
+                    !!(user?.username && user?.avatar?.secure_url)
+                );
+
+                setUser(user);
+
+                if (user?.username && user?.avatar?.secure_url) {
+
+                    console.log("EXISTING USER → HOME");
+
+                    toast.success("Welcome back to WhatsApp");
+
+                    resetLoginState();
+                    navigate("/");
+
+                } else {
+
+                    console.log("NEW USER → STEP 3");
+
+                    setStep(3);
+                }
+            }
+
+        } catch (error) {
+            console.log("OTP ERROR:", error);
+            setError(error?.message || "Failed to verify OTP");
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     const onProfileSubmit = async (data) => {
         try {
