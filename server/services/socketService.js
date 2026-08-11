@@ -3,6 +3,7 @@
 import { Server } from 'socket.io';// correct way to import Server from socket.io in ES6 module syntax
 import User from '../Modals/userModel.js';
 import Message from '../Modals/messages.js';
+import socketMiddleware from '../middlewares/socketMiddlewares.js';
 
 
 //Map to store online users {ye do cheeze lega userId and socketId}
@@ -22,6 +23,8 @@ const initializeSocket = (server) => {
         pingTimeout: 60000, // DISCONNECT  inactive users(or sockets) after 60 seconds
      });
 
+//middleware to authenticate socket connections using JWT token
+io.use(socketMiddleware);
 
      //when a new socket (client) connects to the socket server(when a new socket connection is established), this callback function will be executed.
      io.on('connection', (socket) => {

@@ -239,28 +239,22 @@ const Login = () => {
             console.log("FULL RESPONSE:", response);
 
             if (response?.status === "success") {
+                 toast.success("OTP verified successfully");
+                 const token = response?.data?.token;
+                if (token) {
+                    localStorage.setItem("auth_token", token);
+                }
+
 
                 const user = response?.data?.user;
 
-                console.log("USER:", user);
-                console.log("USERNAME:", user?.username);
-                console.log("AVATAR:", user?.avatar);
-                console.log(
-                    "PROFILE COMPLETE:",
-                    !!(user?.username && user?.avatar?.secure_url)
-                );
-
-                setUser(user);
-
                 if (user?.username && user?.avatar?.secure_url) {
-
+                    setUser(user);
                     console.log("EXISTING USER → HOME");
 
                     toast.success("Welcome back to WhatsApp");
-
-                    resetLoginState();
                     navigate("/");
-
+                    resetLoginState();
                 } else {
 
                     console.log("NEW USER → STEP 3");
