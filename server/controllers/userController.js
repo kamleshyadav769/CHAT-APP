@@ -193,9 +193,11 @@ const verifyOtp = async (req, res) => {
             user.isVerified = true;
             await user.save();
         }
+        const token = generateToken(user._id);
+
 
       /* in deployment we do not set cookie because we are using frontend and backend on different domain so we will send token in response and set it in frontend localstorage
-       const token = generateToken(user._id);
+       
         res.cookie("auth_token", token, {
             httpOnly: true,
             secure: true,
@@ -204,7 +206,7 @@ const verifyOtp = async (req, res) => {
             maxAge: 365 * 24 * 60 * 60 * 1000
         });
 */
-        return response(res, 200, 'OTP verified successfully', { user });
+        return response(res, 200, 'OTP verified successfully', {token, user });
 
     } catch (error) {
         console.error('Verify OTP Error:', error);
