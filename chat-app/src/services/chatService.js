@@ -3,11 +3,11 @@ import {io} from 'socket.io-client';
 import useUserStore from '../Store/useUserStore';
 
 let socket=null;
-const token = localStorage.getItem("auth_token");
+
 
 export const initializeSocket=()=>{
     if(socket) return socket;
-
+    const token = localStorage.getItem("auth_token");
     const user=useUserStore.getState().user;
 
     const BACKEND_URL=import.meta.env.VITE_API_URL;
