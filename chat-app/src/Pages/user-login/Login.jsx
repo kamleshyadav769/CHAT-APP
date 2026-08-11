@@ -198,7 +198,7 @@ const Login = () => {
         } finally {
             setLoading(false); // THIS FIXES YOUR ISSUE
         }
-    }
+    }*/
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -207,7 +207,7 @@ const Login = () => {
             setProfilePicture(URL.createObjectURL(file));
 
         }
-    }*/
+    }
     const onOtpSubmit = async () => {
         try {
             setLoading(true);
