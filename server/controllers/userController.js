@@ -204,7 +204,7 @@ const verifyOtp = async (req, res) => {
             maxAge: 365 * 24 * 60 * 60 * 1000
         });
 */
-        return response(res, 200, 'OTP verified successfully', { token, user });
+        return response(res, 200, 'OTP verified successfully', { user });
 
     } catch (error) {
         console.error('Verify OTP Error:', error);
