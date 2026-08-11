@@ -195,6 +195,12 @@ const verifyOtp = async (req, res) => {
         }
 
         const token = generateToken(user._id);
+        console.log("================================");
+        console.log("OTP VERIFIED");
+        console.log("USER ID:", user._id);
+        console.log("TOKEN GENERATED:", !!token);
+        console.log("SETTING COOKIE");
+        console.log("================================");
         res.cookie("auth_token", token, {
             httpOnly: true,
             secure: true,
