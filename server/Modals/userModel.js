@@ -34,9 +34,9 @@ const userSchema = new Schema({
         }
     },
   
-    // profilePicture: { // if i do not want to upload profilephoto then you can select dummy avatar for this purpose  profilePicture field is created
-    // type: String,
-    // },  for this i update avatar
+    profilePicture: { // if i do not want to upload profilephoto then you can select dummy avatar for this purpose  profilePicture field is created
+     type: String,
+     },//  for this i update avatar
 
     about : {
         type : String,
