@@ -12,7 +12,7 @@ import response from '../utils/resposeHandler.js';
     req.user = userDetails;
     next();
 }
-export default authMiddleware;
+
 */
 const authMiddleware = async (req, res, next) => {
     try {
@@ -55,3 +55,4 @@ const authMiddleware = async (req, res, next) => {
         );
     }
 };
+export default authMiddleware;
