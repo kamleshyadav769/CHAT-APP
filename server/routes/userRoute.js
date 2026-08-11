@@ -7,11 +7,11 @@ import upload from '../middlewares/multerMiddleware.js';
 
 const router =express.Router();
 
-// router.post('/send-otp',sendOtp);
-// router.post('/verify-otp', verifyOtp);
+ router.post('/send-otp',sendOtp);
+ router.post('/verify-otp', verifyOtp);
 
-router.post('/signup',signup);
-router.post('/signin',signin);
+// router.post('/signup',signup);
+// router.post('/signin',signin);
 
 
 router.get('/get-profile',authMiddleware,getProfile);
