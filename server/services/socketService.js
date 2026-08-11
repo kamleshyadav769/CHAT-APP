@@ -75,7 +75,7 @@ socket.on("send_message",async(message)=>{
     try{
         const receiverSocketId=onlineUsers.get(message.receiver._id);
         if (receiverSocketId){
-            io.to(receiverSocketId).emit("receive_message",message)
+            io.to(receiverSocketId).emit("receive_message",{message})
         }
 
     }catch(error){
