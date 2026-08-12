@@ -36,7 +36,7 @@ const HomePage = () => {
         fetchAllUsers();
 
     },[setUser])
-    console.log("list of all users are ",allUsers)
+    // console.log("list of all users are ",allUsers)
     return (
        <Layout>
 <motion.div

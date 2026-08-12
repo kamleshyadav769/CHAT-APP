@@ -22,7 +22,7 @@ const Layout = ({ children, isThemeDialogOpen, toggleThemeDialog, isStatusPrevie
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize)
     }, []);
-    console.log("profile details", selectedContact);
+    // console.log("profile details", selectedContact);
 
     return (
         <div className={`min-h-screen ${theme === "dark" ? "bg-[#111b21] text-white" : "bg-gray-100 text-black"} flex relative`}>
