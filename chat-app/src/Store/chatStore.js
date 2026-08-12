@@ -31,20 +31,12 @@ export const useChatStore=create((set,get)=>({
 
 
         // //listen for incoming messages
-        // socket.on("receive_message",({message})=>{
-            
-        //     get().receiveMessage(message);
-        // });
-
-        socket.on("receive_message", (data) => {
-            console.log("🔥🔥 RECEIVE MESSAGE SOCKET EVENT:", data);
-
-            const message = data?.message ?? data;
-
-            console.log("🔥 Parsed message:", message);
-
+         socket.on("receive_message",({message})=>{
+        console.log("🔥🔥 RECEIVE MESSAGE SOCKET EVENT:", message);
             get().receiveMessage(message);
-        });
+         });
+
+        
         //confirmation of message sent or delivery
         socket.on("message_send",({message})=>{
     set(state=>({

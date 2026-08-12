@@ -71,7 +71,7 @@ socket.on("get_online_status", async (requestedUserId, callback) => {
 
 
 // forward message to reciever if online
-socket.on("send_message",async(message)=>{
+socket.on("message_send",async(message)=>{
     try{
         const receiverSocketId=onlineUsers.get(message.receiver._id);
         if (receiverSocketId){
