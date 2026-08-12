@@ -89,7 +89,7 @@ if(message?.content){
 
  // Emit socket event to notify the receiver of the new message
  if(req.io && req.socketUserMap){
-    const receiverSocketId = req.socketUserMap.get(receiverId);
+    const receiverSocketId = req.socketUserMap.get(receiverId.toString());
 
     if (receiverSocketId) {
         req.io.to(receiverSocketId).emit('receive_message',{message: populatedMessage});
@@ -179,11 +179,14 @@ if(req.io && req.socketUserMap){
     for(const message of messages){
         const senderSocketId = req.socketUserMap.get(message.sender.toString());
         if(senderSocketId){
-            const updatedMessage ={
-                _id: message._id,
-                messageStatus: 'read'
-            };
-            req.io.to(senderSocketId).emit('message_read', updatedMessage);
+            // const updatedMessage ={
+            //     _id: message._id,
+            //     messageStatus: 'read'
+            // };
+            req.io.to(senderSocketId).emit('message_read', {
+                messageId: message._id,
+                messageStatus: "read"
+            });
          
         }
     }
