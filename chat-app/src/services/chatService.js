@@ -19,11 +19,18 @@ export const initializeSocket=()=>{
         reconnectionAttempts:5,
         reconnectionDelay:1000,
      });
+
+    socket.onAny((event, ...args) => {
+        console.log("📡 SOCKET EVENT RECEIVED:", event, args);
+    });
      // Handle connection events
      socket.on('connect',()=>{
         console.log('Connected to Socket.IO server',socket.id);
+         console.log("🟢 USER ID:", user?._id);
+         if (user?._id) {
         // Emit an event to identify the user
         socket.emit('user_connected', user._id);
+         }
      });
 
      socket.on("connect_error",(error)=>{
