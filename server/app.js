@@ -7,7 +7,9 @@ import morgan from "morgan";
 import authroute from "./routes/userRoute.js";
 import chatRoute from "./routes/chatRoute.js";
 import statusRoute from "./routes/statusRoute.js";
-import net from "net";
+import initializeSocket from "./services/socketService.js";
+import http from "http";
+
 
  const app=express();
 
@@ -21,9 +23,25 @@ app.use(cors({
 app.use(express.urlencoded({extended:true}));
  app.use(cookieParser());  
 app.use(morgan("dev"));
-app.get("/version", (req, res) => {
-      res.send("DNS TEST VERSION");
+
+//create http server and pass the express app to it, this will allow us to use the same server for both http requests and socket connections
+const server=http.createServer(app);
+const io=initializeSocket(server);
+
+// apply socket.io middleware before starting routes to ensure that socket.io is initialized and ready to handle connections before any routes are accessed. This way, any route that needs to use socket.io can do so without issues.
+app.use((req, res, next) => {
+    console.log("🔥 SERVER SOCKET MIDDLEWARE:", req.method, req.url);
+
+    req.io = io; // Attach the socket.io instance to the request object for use in routes
+    req.socketUserMap = io.socketUserMap; // Attach the onlineUsers map to the request object for use in routes
+
+    console.log("io:", !!req.io);
+    console.log("socketUserMap:", !!req.socketUserMap);
+
+    
+    next();
 });
+
 
 
 app.use('/api/auth',authroute);

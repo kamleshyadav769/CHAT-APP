@@ -3,28 +3,11 @@ config();
 import app from"./app.js";
 import{v2} from "cloudinary"
 import connectionToDB from "./Config/dbConnection.js";
-import initializeSocket from "./services/socketService.js";
-import http from "http";
+
  
 
 
-//create http server and pass the express app to it, this will allow us to use the same server for both http requests and socket connections
-const server=http.createServer(app);
-const io=initializeSocket(server);
 
-// apply socket.io middleware before starting routes to ensure that socket.io is initialized and ready to handle connections before any routes are accessed. This way, any route that needs to use socket.io can do so without issues.
-app.use((req, res, next) => {
-    console.log("🔥 SERVER SOCKET MIDDLEWARE:", req.method, req.url);
-
-    req.io = io; // Attach the socket.io instance to the request object for use in routes
-    req.socketUserMap = io.socketUserMap; // Attach the onlineUsers map to the request object for use in routes
-
-    console.log("io:", !!req.io);
-    console.log("socketUserMap:", !!req.socketUserMap);
-
-    
-    next();
-});
 
 
 
