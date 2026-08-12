@@ -184,7 +184,7 @@ if(req.io && req.socketUserMap){
                 messageStatus: 'read'
             };
             req.io.to(senderSocketId).emit('message_read', updatedMessage);
-          
+            await Message.save();
         }
     }
 }
