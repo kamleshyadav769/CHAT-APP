@@ -27,7 +27,7 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
     const { user } = useUserStore();
 
 
-    const { messages, loading, sendMessage, receiveMessage, fetchMessages, fetchConversations, conversations, isUserTyping, startTyping, stopTyping, getUserLastSeen, isUserOnline, addReaction, deleteMessage, cleanup } = useChatStore();
+    const { messages, loading, sendMessage, receiveMessage, fetchMessages, fetchConversations, conversations, isUserTyping, startTyping, stopTyping, getUserLastSeen, isUserOnline, addReaction, deleteMessage, cleanup, openChat } = useChatStore();
 
     //get online status and last seen of the selected contact
 
@@ -41,10 +41,12 @@ const ChatWindow = ({ selectedContact, setSelectedContact }) => {
             const conversation = conversations?.data?.find(conv => conv.participants.some(participant => participant._id === selectedContact?._id));
             console.log("conversation is",conversation)
             if (conversation?._id) {
-                fetchMessages(conversation._id);
+                openChat(conversation._id);
+                fetchMessages(conversation._id,true);
             }
         }
-    }, [selectedContact, conversations, fetchMessages]);
+    }, [selectedContact, conversations, fetchMessages, openChat]);
+    
 
 
     useEffect(() => {
