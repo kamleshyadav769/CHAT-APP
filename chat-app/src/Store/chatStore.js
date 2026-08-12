@@ -40,7 +40,7 @@ export const useChatStore=create((set,get)=>({
         //confirmation of message sent or delivery
         socket.on("message_send",({message})=>{
     set(state=>({
-    messages:state.messages.map(msg=>msg._id===message._id?{...msg}:msg)
+    messages:state.messages.map(msg=>msg._id===message._id?{...msg,...message}:msg)
 
     }));
         });
@@ -48,6 +48,12 @@ export const useChatStore=create((set,get)=>({
 
         //upadate message status
         socket.on("message_read",({messageId,messageStatus})=>{
+
+            console.log("🔥 RECEIVED message_read:", {
+                messageId,
+                messageStatus
+            });
+
     set((state)=>({
            messages:state.messages.map(msg=>msg._id===messageId?{...msg,messageStatus}:msg)
         }));
@@ -304,14 +310,14 @@ try{
         set(state=>({
             messages:state.messages.map(msg=>unreadMessageIds.includes(msg._id)?{...msg,messageStatus:"read"}:msg)
         }));
-        //emit socket event to notify sender about read status update
-        const socket=getSocket();
-        if(socket){
-            socket.emit("message_read",{
-               messageIds: unreadMessageIds,
-               senderId:messages[0]?.sender?._id
-            });
-        }
+        // //emit socket event to notify sender about read status update
+        // const socket=getSocket();
+        // if(socket){
+        //     socket.emit("message_read",{
+        //        messageIds: unreadMessageIds,
+        //        senderId:messages[0]?.sender?._id
+        //     });
+        // }
     }catch(error){
         console.error("failed to mark messages as read:",error);
     }

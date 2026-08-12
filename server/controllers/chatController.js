@@ -84,6 +84,19 @@ if(message?.content){
         conversation.unreadCount += 1;
         await conversation.save();
 
+
+        // Check if receiver is online
+        if (req.io && req.socketUserMap) {
+            const receiverSocketId = req.socketUserMap.get(receiverId.toString());
+
+            if (receiverSocketId) {
+                // Receiver is online, so mark message as delivered
+                message.messageStatus = "delivered";
+                await message.save();
+            }
+        }
+
+
  const populatedMessage = await Message.findById(message._id).populate('sender', 'username avatar').populate('receiver', 'username avatar');
 
 
@@ -93,10 +106,30 @@ if(message?.content){
 
     if (receiverSocketId) {
         req.io.to(receiverSocketId).emit('receive_message',{message: populatedMessage});
-        message.messageStatus='delivered';
-        await message.save();
+       // message.messageStatus = "read";//delivered
+        //await message.save();
     }
  }
+
+
+
+        // Notify sender that message was sent/delivered
+        if (req.socketUserMap && req.io) {
+
+            const senderSocketId =
+                req.socketUserMap.get(senderId.toString());
+
+            if (senderSocketId) {
+                req.io.to(senderSocketId).emit(
+                    "message_send",
+                    {
+                        message: populatedMessage
+                    }
+                );
+            }
+        }
+
+
 
   return response(res, 200, 'Message sent successfully', populatedMessage);
 
@@ -150,10 +183,37 @@ if(!conversation.participants.includes(userId)){
     const messages = await Message.find({ conversation: conversationId })
     .populate('sender', 'username avatar')
     .populate('receiver', 'username avatar')
-    .sort( "createdAt" );
+        .sort({ createdAt: 1 });////"createdAt" 
+
+    // Get messages that are going to be marked as read
+    const unreadMessages = await Message.find({
+        conversation: conversationId,
+        receiver: userId,
+        messageStatus: { $in: ['send', 'delivered'] }
+    });
+
+
     await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
     conversation.unreadCount=0;
     await conversation.save();
+
+    // Notify senders in real time
+    if (req.io && req.socketUserMap) {
+        for (const message of unreadMessages) {
+            const senderSocketId = req.socketUserMap.get(
+                message.sender.toString()
+            );
+
+            if (senderSocketId) {
+                req.io.to(senderSocketId).emit('message_read', {
+                    messageId: message._id.toString(),                   // _id: message._id,
+                    conversation: conversationId,
+                    messageStatus: 'read'
+                });
+            }
+        }
+    }
+
     return response(res, 200, 'Messages fetched successfully', messages);
 
 }catch (error) {
@@ -178,9 +238,13 @@ await Message.updateMany({ _id: { $in: messageIds }, receiver: userId },{ $set: 
 if(req.io && req.socketUserMap){
     for(const message of messages){
         const senderSocketId = req.socketUserMap.get(message.sender.toString());
+        console.log("👤 Sender ID:", message.sender.toString());
+        console.log("🔌 Sender Socket ID:", senderSocketId);
+
         if(senderSocketId){
+            console.log("📖 Sending message_read to sender");
             const updatedMessage ={
-                _id: message._id,
+                messageId: message._id.toString(),  // _id: message._id,
                 messageStatus: 'read'
             };
             req.io.to(senderSocketId).emit('message_read', updatedMessage);
