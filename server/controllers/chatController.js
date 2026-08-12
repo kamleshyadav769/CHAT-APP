@@ -179,15 +179,12 @@ if(req.io && req.socketUserMap){
     for(const message of messages){
         const senderSocketId = req.socketUserMap.get(message.sender.toString());
         if(senderSocketId){
-            // const updatedMessage ={
-            //     _id: message._id,
-            //     messageStatus: 'read'
-            // };
-            req.io.to(senderSocketId).emit('message_read', {
-                messageId: message._id,
-                messageStatus: "read"
-            });
-         
+            const updatedMessage ={
+                _id: message._id,
+                messageStatus: 'read'
+            };
+            req.io.to(senderSocketId).emit('message_read', updatedMessage);
+         await Message.updateOne({ _id: message._id }, { $set: { messageStatus: 'read' } });
         }
     }
 }
