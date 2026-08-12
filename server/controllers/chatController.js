@@ -7,7 +7,8 @@ import cloudinary from "cloudinary";
 
 const sendMessage = async (req, res) => {
     try{
-        const {senderId, receiverId, content,messageStatus} = req.body;
+        const senderId = req.user.userId;
+        const { receiverId, content,messageStatus} = req.body;
 
 
 
@@ -73,7 +74,7 @@ let contentType=null;
             content,
            mediaUrl,
             contentType,
-            messageStatus
+            messageStatus:"send"
         });
         await message.save();
 
@@ -180,39 +181,42 @@ try{
 if(!conversation.participants.includes(userId)){
     return response(res,403,'You are not authorized to view this conversation');
 }
+  
+
+    // // Get messages that are going to be marked as read
+    // const unreadMessages = await Message.find({
+    //     conversation: conversationId,
+    //     receiver: userId,
+    //     messageStatus: { $in: ['send', 'delivered'] }
+    // });
+
+
+    // await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
+    // conversation.unreadCount=0;
+    // await conversation.save();
+
+    //update first then fetch messages to ensure the latest status is retrieved
     const messages = await Message.find({ conversation: conversationId })
-    .populate('sender', 'username avatar')
-    .populate('receiver', 'username avatar')
+        .populate('sender', 'username avatar')
+        .populate('receiver', 'username avatar')
         .sort({ createdAt: 1 });////"createdAt" 
 
-    // Get messages that are going to be marked as read
-    const unreadMessages = await Message.find({
-        conversation: conversationId,
-        receiver: userId,
-        messageStatus: { $in: ['send', 'delivered'] }
-    });
+    // // Notify senders in real time
+    // if (req.io && req.socketUserMap) {
+    //     for (const message of unreadMessages) {
+    //         const senderSocketId = req.socketUserMap.get(
+    //             message.sender.toString()
+    //         );
 
-
-    await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
-    conversation.unreadCount=0;
-    await conversation.save();
-
-    // Notify senders in real time
-    if (req.io && req.socketUserMap) {
-        for (const message of unreadMessages) {
-            const senderSocketId = req.socketUserMap.get(
-                message.sender.toString()
-            );
-
-            if (senderSocketId) {
-                req.io.to(senderSocketId).emit('message_read', {
-                    messageId: message._id.toString(),                   // _id: message._id,
-                    conversation: conversationId,
-                    messageStatus: 'read'
-                });
-            }
-        }
-    }
+    //         if (senderSocketId) {
+    //             req.io.to(senderSocketId).emit('message_read', {
+    //                 messageId: message._id.toString(),                   // _id: message._id,
+    //                 conversation: conversationId,
+    //                 messageStatus: 'read'
+    //             });
+    //         }
+    //     }
+    // }
 
     return response(res, 200, 'Messages fetched successfully', messages);
 
@@ -248,7 +252,7 @@ if(req.io && req.socketUserMap){
                 messageStatus: 'read'
             };
             req.io.to(senderSocketId).emit('message_read', updatedMessage);
-         await Message.updateOne({ _id: message._id }, { $set: { messageStatus: 'read' } });
+        // await Message.updateOne({ _id: message._id }, { $set: { messageStatus: 'read' } });
         }
     }
 }
@@ -275,13 +279,35 @@ try{
     if(message.sender.toString() !== userId){
         return response(res,403,'You are not authorized to delete this message');
     }
-    await Message.deleteOne({ _id: messageId });  
+    await Message.deleteOne({ _id: messageId });
+    
+    const conversationId = message.conversation;
+    const receiverId = message.receiver;
+    // Find the newest remaining message
+    const latestMessage = await Message.findOne({
+        conversation: conversationId
+    })
+        .sort({ createdAt: -1 });
+
+    // Update conversation.lastMessage
+    const conversation = await Conversation.findById(conversationId);
+
+    if (conversation) {
+        conversation.lastMessage = latestMessage
+            ? latestMessage._id
+            : null;
+
+        await conversation.save();
+    }
+
     
     // Emit socket event to notify the receiver of the deleted message
     if(req.io && req.socketUserMap){
         const receiverSocketId = req.socketUserMap.get(message.receiver.toString());
         if(receiverSocketId){
-            req.io.to(receiverSocketId).emit('message_deleted',  messageId );
+            req.io.to(receiverSocketId).emit('message_deleted', {
+                deletedMessageId: messageId.toString()
+            });  //  messageId
         }
     }
 

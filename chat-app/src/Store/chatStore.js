@@ -25,10 +25,11 @@ export const useChatStore=create((set,get)=>({
         socket.off("receive_message");
         socket.off("user_typing");
         socket.off("user_status");
-        socket.off("message_send");
+      //  socket.off("message_send");
         socket.off("message_error");
         socket.off("message_deleted");
-
+        socket.off("message_read");
+        socket.off("reaction_update");
 
         // //listen for incoming messages
          socket.on("receive_message",({message})=>{
@@ -37,13 +38,13 @@ export const useChatStore=create((set,get)=>({
          });
 
         
-        //confirmation of message sent or delivery
-        socket.on("message_send",({message})=>{
-    set(state=>({
-    messages:state.messages.map(msg=>msg._id===message._id?{...msg,...message}:msg)
+    //     //confirmation of message sent or delivery
+    //     socket.on("message_send",({message})=>{
+    // set(state=>({
+    // messages:state.messages.map(msg=>msg._id===message._id?{...msg,...message}:msg)
 
-    }));
-        });
+    // }));
+    //     });
     
 
         //upadate message status
@@ -69,7 +70,7 @@ export const useChatStore=create((set,get)=>({
         // handle remove message from local state when deleted
         socket.on("message_deleted",({deletedMessageId})=>{
     set((state)=>({
-           messages:state.messages.filter(msg=>msg._id!==deletedMessageId)
+           messages:state.messages.filter(msg=>String(msg._id)!==String(deletedMessageId))
         }));
          });
 
@@ -82,18 +83,18 @@ export const useChatStore=create((set,get)=>({
         socket.on("user_typing", ({ userId,conversationId,isTyping})=>{
     set((state)=>{
         // typingUsers:state.typingUsers.set(`${conversationId}-${userId}`,isTyping)
-        const newTyingUsers=new Map(state.typingUsers);
-        if(!newTyingUsers.has(conversationId)){
-            newTyingUsers.set(conversationId, new Set());
+        const newTypingUsers=new Map(state.typingUsers);
+        if(!newTypingUsers.has(conversationId)){
+            newTypingUsers.set(conversationId, new Set());
         }
 
-       const typingSet= newTyingUsers.get(conversationId);
+       const typingSet= newTypingUsers.get(conversationId);
        if(isTyping){
            typingSet.add(userId);
        }else{
            typingSet.delete(userId);
        }
-         return {typingUsers:newTyingUsers};
+         return {typingUsers:newTypingUsers};
     });
          });
 
@@ -279,7 +280,7 @@ try{
                         return {
                             ...conv,
                             lastMessage:message,
-                            unreadCount:message?.receiver?._id===currentUser._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                            unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
                         }
                     }
                     return conv;
@@ -343,7 +344,7 @@ try{
    addReaction:async(messageId,emoji)=>{
   const socket=getSocket();
   const {currentUser}=get();
-    if(socket||currentUser) {
+    if(socket&&currentUser) {
         socket.emit("add_reaction",{
             messageId,
             emoji,
