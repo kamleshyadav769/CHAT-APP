@@ -32,10 +32,10 @@ const ChatList=({ contacts })=>{
         contact.username?.toLowerCase().includes(searchTerm.toLowerCase()))
 
 
-console.log("in user", user);
-       console.log("contacts",contacts);
-       console.log("filteredContacts",filteredContacts);
-    console.log("selectedContact from store:", selectedContact);
+// console.log("in user", user);
+//        console.log("contacts",contacts);
+//        console.log("filteredContacts",filteredContacts);
+//     console.log("selectedContact from store:", selectedContact);
        
     return (
         <div className={`w-full border-r h-screen ${theme === "dark" ? "bg-[rgb(17,27,33)] border-gray-600" : "bg-white border-gray-200"}`}>
@@ -61,22 +61,22 @@ console.log("in user", user);
 
 <div className="overflow-y-auto h-[calc(100vh-120px)]">
 {filteredContacts.map(contact => (
-    console.log("contact in map", contact.conversation?.lastMessage?.receiver|| "no last message"),
-    console.log("Receiver ID:", contact?.conversation?.lastMessage?.receiver?._id), //this  is retrun null
-    console.log("Receiver actual ID:", contact?.conversation?.lastMessage?.receiver), //this is return reciver id
-                console.log("Current User ID:", user?._id),
-                console.log(
-                "Is Current User Receiver?",
-                contact?.conversation?.lastMessage?.receiver?._id === user?._id
-                ),
-    console.log(
-        "Is  actual Current User Receiver?",
-        contact?.conversation?.lastMessage?.receiver === user?._id
-    ),
-    // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver._id),
-    // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver),
-    // console.log("logged in user id", user?._id),
-    console.log("unread count is", contact?.conversation?.unreadCount||"no unread count"),
+    // console.log("contact in map", contact.conversation?.lastMessage?.receiver|| "no last message"),
+    // console.log("Receiver ID:", contact?.conversation?.lastMessage?.receiver?._id), //this  is retrun null
+    // console.log("Receiver actual ID:", contact?.conversation?.lastMessage?.receiver), //this is return reciver id
+    //             console.log("Current User ID:", user?._id),
+    //             console.log(
+    //             "Is Current User Receiver?",
+    //             contact?.conversation?.lastMessage?.receiver?._id === user?._id
+    //             ),
+    // console.log(
+    //     "Is  actual Current User Receiver?",
+    //     contact?.conversation?.lastMessage?.receiver === user?._id
+    // ),
+    // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver._id),
+    // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver),
+    // // console.log("logged in user id", user?._id),
+    // console.log("unread count is", contact?.conversation?.unreadCount||"no unread count"),
 
 
     <motion.div key={contact._id} 
