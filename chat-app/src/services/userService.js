@@ -98,7 +98,7 @@ const logoutUser = async () => {
 const getAllUsers = async () => {
     try {
         const response = await axoisInstance.get("/auth/all-users");
-        console.log("getAllUsers response:", response.data);
+       // console.log("getAllUsers response:", response.data);
         return response.data;
     } catch (error) {
         throw error.response ? error.response.data : error.message;
