@@ -183,17 +183,17 @@ if(!conversation.participants.includes(userId)){
 }
   
 
-    // // Get messages that are going to be marked as read
-    // const unreadMessages = await Message.find({
-    //     conversation: conversationId,
-    //     receiver: userId,
-    //     messageStatus: { $in: ['send', 'delivered'] }
-    // });
+    // Get messages that are going to be marked as read
+     const unreadMessages = await Message.find({
+        conversation: conversationId,
+         receiver: userId,
+         messageStatus: { $in: ['send', 'delivered'] }
+     });
 
 
-    // await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
-    // conversation.unreadCount=0;
-    // await conversation.save();
+     await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
+     conversation.unreadCount=0;
+     await conversation.save();
 
     //update first then fetch messages to ensure the latest status is retrieved
     const messages = await Message.find({ conversation: conversationId })
@@ -202,21 +202,21 @@ if(!conversation.participants.includes(userId)){
         .sort({ createdAt: 1 });////"createdAt" 
 
     // // Notify senders in real time
-    // if (req.io && req.socketUserMap) {
-    //     for (const message of unreadMessages) {
-    //         const senderSocketId = req.socketUserMap.get(
-    //             message.sender.toString()
-    //         );
+     if (req.io && req.socketUserMap) {
+        for (const message of unreadMessages) {
+            const senderSocketId = req.socketUserMap.get(
+                message.sender.toString()
+             );
 
-    //         if (senderSocketId) {
-    //             req.io.to(senderSocketId).emit('message_read', {
-    //                 messageId: message._id.toString(),                   // _id: message._id,
-    //                 conversation: conversationId,
-    //                 messageStatus: 'read'
-    //             });
-    //         }
-    //     }
-    // }
+            if (senderSocketId) {
+                 req.io.to(senderSocketId).emit('message_read', {
+                     messageId: message._id.toString(),                   // _id: message._id,
+                    conversation: conversationId,
+                    messageStatus: 'read'
+               });
+            }
+    }
+     }
 
     return response(res, 200, 'Messages fetched successfully', messages);
 
