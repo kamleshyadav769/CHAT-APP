@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import  formatTimestamp  from "../../utils/formateTime";
 
 
-const ChatList=({ contacts })=>{
+const ChatList=({ contacts=[] })=>{
     const selectedContact = useLayoutStore(state => state.selectedContact);
      const setSelectedContact = useLayoutStore(state => state.setSelectedContact);
      const {theme} = usethemeStore();
@@ -60,7 +60,32 @@ const ChatList=({ contacts })=>{
 
 
 <div className="overflow-y-auto h-[calc(100vh-120px)]">
-{filteredContacts.map(contact => (
+{filteredContacts.map(contact => {
+    const conversation =
+        contact?.conversation;
+
+    const lastMessage =
+        conversation?.lastMessage;
+
+    const unreadCount =
+        conversation?.unreadCount || 0;
+
+
+    // IMPORTANT:
+    // receiver is a populated USER object
+    const lastMessageReceiverId =
+        lastMessage?.receiver?._id?.toString();
+
+
+    const currentUserId =
+        user?._id?.toString();
+
+
+    const hasUnreadMessages =
+        lastMessageReceiverId === currentUserId &&
+        unreadCount > 0;
+    
+    return(
     // console.log("contact in map", contact.conversation?.lastMessage?.receiver|| "no last message"),
     // console.log("Receiver ID:", contact?.conversation?.lastMessage?.receiver?._id), //this  is retrun null
     // console.log("Receiver actual ID:", contact?.conversation?.lastMessage?.receiver), //this is return reciver id
@@ -94,14 +119,30 @@ const ChatList=({ contacts })=>{
         {contact.username}
         </h2>
 
-        {contact?.conversation &&(
+        {/* {contact?.conversation &&(
             <span className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
                {formatTimestamp(contact?.conversation?.lastMessage?.createdAt)}
             </span>
-        )}
+        )} */}
+
+                    {lastMessage && (
+
+                        <span
+                            className={`text-xs ${theme === "dark"
+                                    ? "text-gray-400"
+                                    : "text-gray-500"
+                                }`}
+                        >
+                            {formatTimestamp(
+                                lastMessage?.createdAt
+                            )}
+                        </span>
+
+                    )}
 
 </div>
-<div className="flex justify-between items-baseline">
+
+{/* <div className="flex justify-between items-baseline">
     <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"} truncate`}>
         {contact?.conversation?.lastMessage?.content || "No messages yet"}
     </p>
@@ -112,11 +153,55 @@ const ChatList=({ contacts })=>{
      }
 
 </div>
-            
+             */}
+
+                {/* LAST MESSAGE + UNREAD COUNT */}
+
+                <div className="flex justify-between items-baseline">
+
+                    <p
+                        className={`text-sm truncate ${theme === "dark"
+                                ? "text-gray-400"
+                                : "text-gray-500"
+                            }`}
+                    >
+
+                        {lastMessage?.content ||
+                            (
+                                lastMessage?.contentType ===
+                                    "image"
+                                    ? "📷 Image"
+                                    : lastMessage?.contentType ===
+                                        "video"
+                                        ? "🎥 Video"
+                                        : "No messages yet"
+                            )}
+
+                    </p>
+
+
+                    {/* UNREAD BADGE */}
+
+                    {hasUnreadMessages && (
+
+                        <p
+                            className={`text-sm font-semibold w-6 h-6 flex items-center justify-center bg-yellow-500 ${theme === "dark"
+                                    ? "text-gray-800"
+                                    : "text-gray-500"
+                                } rounded-full`}
+                        >
+                            {unreadCount}
+                        </p>
+
+                    )}
+
+                </div>
+
+
         </div>
 
     </motion.div>
-))}
+)})}
 </div>
 
         </div>
