@@ -57,4 +57,4 @@ app.use('/api/status',statusRoute);
  });
 
 
- export default app;
+ export { app,server};
