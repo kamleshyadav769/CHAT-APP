@@ -11,8 +11,13 @@ const conversationSchema= new mongoose.Schema({
 
     },
     unreadCount:{
-       type :Number,
-       default:0,
+    //    type :Number,
+    //    default:0,
+    
+        type: Map,
+        of: Number,
+        default: {}
+
     }
 
 },{

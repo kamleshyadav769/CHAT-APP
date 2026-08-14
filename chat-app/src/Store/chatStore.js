@@ -32,11 +32,25 @@ export const useChatStore=create((set,get)=>({
         socket.off("reaction_update");
 
         // //listen for incoming messages
-         socket.on("receive_message",({message})=>{
+       /*  socket.on("receive_message",({message})=>{
         console.log("🔥🔥 RECEIVE MESSAGE SOCKET EVENT:", message);
             get().receiveMessage(message);
-         });
+         });*/
+        socket.on(
+            "receive_message",
+            ({ message, conversationId, unreadCount }) => {
+                console.log(
+                    "🔥 RECEIVE MESSAGE SOCKET EVENT:",
+                    message
+                );
 
+                get().receiveMessage(
+                    message,
+                    conversationId,
+                    unreadCount
+                );
+            }
+        );
         
     //     //confirmation of message sent or delivery
     //     socket.on("message_send",({message})=>{
@@ -162,14 +176,15 @@ set({loading:true,error:null});
 try{
     const {data}= await axiosInstance.get(`/chats/conversations/${conversationId}/messages`);
    const messageArray= data.data || data ||[];
+
     set({messages:messageArray,
         currentConversation:conversationId,
         loading:false,
        
     });
 // //after fetching messages, we can also check the online status of participants in this conversation(mark unread messages as read and update online status)
-const{markMessagesAsRead}=get();
- markMessagesAsRead();
+// const{markMessagesAsRead}=get();
+//  markMessagesAsRead();
 
     return messageArray;
 
@@ -256,7 +271,7 @@ try{
 },
 
 
-        receiveMessage:(message)=>{
+        receiveMessage:(message,conversationId,unreadCount)=>{
             if(!message) return;
 
             const {currentConversation,currentUser,messages}=get();
@@ -284,7 +299,8 @@ try{
                         return {
                             ...conv,
                             lastMessage:message,
-                            unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                         //   unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                            unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
                     return conv;
@@ -301,7 +317,7 @@ try{
 
        // mark messages as read when the user opens a conversation and update the local state and also emit a socket event to notify the sender about the read status 
    markMessagesAsRead:async()=>{
-    const {messages,currentUser}=get();
+    const {messages,currentUser,currentConversation}=get();
     if(!messages.length||!currentUser) return;
 
     const unreadMessageIds=messages.filter(msg=>msg.messageStatus!=="read"&&msg.receiver?._id===currentUser._id).map(msg=>msg._id).filter(Boolean);
@@ -313,16 +329,21 @@ try{
         const {data}= await axiosInstance.put("/chats/messages/read",{messageIds:unreadMessageIds});
         console.log("Messages marked as read:",data);
         set(state=>({
-            messages:state.messages.map(msg=>unreadMessageIds.includes(msg._id)?{...msg,messageStatus:"read"}:msg)
+            messages:state.messages.map(msg=>unreadMessageIds.includes(msg._id)?{...msg,messageStatus:"read"}:msg),
+            conversations: {
+                ...state.conversations,
+
+                data: state.conversations?.data?.map((conv) =>
+                    conv._id === currentConversation
+                        ? {
+                            ...conv,
+                            unreadCount: 0
+                        }
+                        : conv
+                )
+            }
         }));
-        // //emit socket event to notify sender about read status update
-        // const socket=getSocket();
-        // if(socket){
-        //     socket.emit("message_read",{
-        //        messageIds: unreadMessageIds,
-        //        senderId:messages[0]?.sender?._id
-        //     });
-        // }
+       
     }catch(error){
         console.error("failed to mark messages as read:",error);
     }

@@ -82,9 +82,17 @@ let contentType=null;
 if(message?.content){
         conversation.lastMessage = message._id;
 }
-        conversation.unreadCount += 1;
-        await conversation.save();
+        // conversation.unreadCount += 1;
+        // await conversation.save();
+        const currentUnread =
+            conversation.unreadCount.get(receiverId.toString()) || 0;
 
+        conversation.unreadCount.set(
+            receiverId.toString(),
+            currentUnread + 1
+        );
+
+        await conversation.save();
 
         // Check if receiver is online
         if (req.io && req.socketUserMap) {
@@ -159,7 +167,28 @@ try {
 
     }).sort({ updatedAt: -1 });
 
-    return response(res, 200, 'Conversations fetched successfully', conversations);
+    const formattedConversations = conversations.map(
+        (conversation) => {
+            const conversationObject =
+                conversation.toObject();
+
+            conversationObject.unreadCount =
+                conversation.unreadCount.get(
+                    userId.toString()
+                ) || 0;
+
+            return conversationObject;
+        }
+    );
+
+    return response(
+        res,
+        200,
+        "Conversations fetched successfully",
+        formattedConversations
+    );
+
+   // return response(res, 200, 'Conversations fetched successfully', conversations);
 
 }catch (error) {
     console.error('Error fetching conversations:', error);
@@ -192,7 +221,8 @@ if(!conversation.participants.includes(userId)){
 
 
      await Message.updateMany({ conversation: conversationId, receiver: userId, messageStatus: { $in: ['send', 'delivered'] } }, { $set: { messageStatus: 'read' } });
-     conversation.unreadCount=0;
+    //  conversation.unreadCount=0;
+    conversation.unreadCount.set(userId.toString(), 0);
      await conversation.save();
 
     //update first then fetch messages to ensure the latest status is retrieved
@@ -218,7 +248,7 @@ if(!conversation.participants.includes(userId)){
     }
      }
 
-    return response(res, 200, 'Messages fetched successfully', messages);
+    return response(res, 200, 'Messages fetched successfully', {messages,conversation});
 
 }catch (error) {
     console.error('Error fetching messages:', error);
@@ -237,6 +267,27 @@ try{
 const messages = await Message.find({ _id: { $in: messageIds }, receiver: userId,  });
 
 await Message.updateMany({ _id: { $in: messageIds }, receiver: userId },{ $set: { messageStatus: 'read' } });
+    const conversationIds = [
+        ...new Set(
+            messages.map((message) =>
+                message.conversation.toString()
+            )
+        )
+    ];
+
+    for (const conversationId of conversationIds) {
+        const conversation =
+            await Conversation.findById(conversationId);
+
+        if (conversation) {
+            conversation.unreadCount.set(
+                userId.toString(),
+                0
+            );
+
+            await conversation.save();
+        }
+    }
 
 //notify to original senders about read status
 if(req.io && req.socketUserMap){
