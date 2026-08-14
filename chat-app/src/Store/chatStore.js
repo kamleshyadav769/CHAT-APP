@@ -309,7 +309,7 @@ try{
                         return {
                             ...conv,
                             lastMessage:message,
-                            unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                            unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ?(conv.unreadCount||0)+1:conv.unreadCount||0
                            // unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
