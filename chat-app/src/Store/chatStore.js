@@ -187,8 +187,8 @@ try{
      });
    
 // //after fetching messages, we can also check the online status of participants in this conversation(mark unread messages as read and update online status)
-// const{markMessagesAsRead}=get();
-//  markMessagesAsRead();
+ const{markMessagesAsRead}=get();
+  markMessagesAsRead();
 
     return messageArray;
 
