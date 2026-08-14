@@ -295,10 +295,10 @@ try{
                 set(state=>({
                     messages:[...state.messages,message]
                 }));
-            //automatically mark the message as read if it's for the current conversation and the receiver is the logged in user
-                if(message?.receiver?._id===currentUser?._id){
-                    get().markMessagesAsRead();
-                }
+            // //automatically mark the message as read if it's for the current conversation and the receiver is the logged in user
+            //     if(message?.receiver?._id===currentUser?._id){
+            //         get().markMessagesAsRead();
+            //     }
 
             }
             console.log("currentUser", currentUser?._id);
