@@ -71,19 +71,13 @@ const ChatList=({ contacts=[] })=>{
         conversation?.unreadCount || 0;
 
 console.log("unread count is", unreadCount);
-    // IMPORTANT:
-    // receiver is a populated USER object
-    const lastMessageReceiverId =
-        lastMessage?.receiver?._id?.toString();
+    
 
 
-    const currentUserId =
-        user?._id?.toString();
+   
 
 
-    const hasUnreadMessages =
-        lastMessageReceiverId === currentUserId &&
-        unreadCount > 0;
+  
     
     return(
     // console.log("contact in map", contact.conversation?.lastMessage?.receiver|| "no last message"),
@@ -101,7 +95,7 @@ console.log("unread count is", unreadCount);
     // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver._id),
     // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver),
     // // console.log("logged in user id", user?._id),
-    // console.log("unread count is", contact?.conversation?.unreadCount||"no unread count"),
+     console.log("unread count is of contact", contact?.conversation?.unreadCount||"no unread count"),
 
 
     <motion.div key={contact._id} 
@@ -182,7 +176,7 @@ console.log("unread count is", unreadCount);
 
                     {/* UNREAD BADGE */}
 
-                    {hasUnreadMessages && (
+                    { unreadCount > 0 && (
 
                         <p
                             className={`text-sm font-semibold w-6 h-6 flex items-center justify-center bg-yellow-500 ${theme === "dark"
