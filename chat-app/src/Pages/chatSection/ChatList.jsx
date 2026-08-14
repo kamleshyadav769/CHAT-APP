@@ -70,7 +70,7 @@ const ChatList=({ contacts=[] })=>{
     const unreadCount =
         conversation?.unreadCount || 0;
 
-
+console.log("unread count is", unreadCount);
     // IMPORTANT:
     // receiver is a populated USER object
     const lastMessageReceiverId =
