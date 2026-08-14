@@ -99,7 +99,9 @@ console.log("unread count is", unreadCount);
 
 
     <motion.div key={contact._id} 
-    onClick={() => setSelectedContact(contact)}
+    onClick={() => {setSelectedContact(contact)
+       contact.unreadCount=0; // Reset unread count when contact is selected
+    }}
     className={`p-3 flex items-center cursor-pointer ${theme === "dark" ? 
         selectedContact?._id === contact?._id ?"bg-gray-700" : "hover:bg-gray-800" 
         : 
