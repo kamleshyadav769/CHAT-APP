@@ -293,6 +293,7 @@ try{
             //     }
 
             }
+            console.log("message", message);
             console.log("currentUser", currentUser?._id);
            // console.log("receiver", message?.receiver?._id);
             console.log("receiver", message?.receiver);
@@ -303,6 +304,7 @@ try{
 //update conversation preview and unread count
             set((state)=>{
                 const updatedConversations=state.conversations?.data?.map(conv=>{
+                    console.log("conv", conv);
                     if(conv._id===message.conversation){
                         return {
                             ...conv,
