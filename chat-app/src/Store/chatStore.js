@@ -287,10 +287,7 @@ try{
                 set(state=>({
                     messages:[...state.messages,message]
                 }));
-            // //automatically mark the message as read if it's for the current conversation and the receiver is the logged in user
-            //     if(message?.receiver?._id===currentUser?._id){
-            //         get().markMessagesAsRead();
-            //     }
+           
 
             }
             console.log("message", message);
@@ -310,7 +307,7 @@ try{
                             ...conv,
                             lastMessage:message,
                           //  unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ?(conv.unreadCount||0)+1:conv.unreadCount||0
-                            unreadCount: message?.receiver?._id === currentUser?._id && message.conversation !== currentConversation ? (conv.unreadCount || 0) + 1 :  0
+                            unreadCount: message?.receiver?._id === currentUser?._id && !( message.conversation === currentConversation) ? (conv.unreadCount || 0) + 1 : conv.unreadCount||0
                            // unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
@@ -323,6 +320,10 @@ try{
                     }
                 };
             });
+
+            if(message?.receiver?._id===currentUser?._id&&message.conversation===currentConversation){
+                get().markMessagesAsRead();
+            }
         
         },
 
