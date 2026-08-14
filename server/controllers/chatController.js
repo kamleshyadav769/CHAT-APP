@@ -114,7 +114,7 @@ if(message?.content){
     const receiverSocketId = req.socketUserMap.get(receiverId.toString());
 
     if (receiverSocketId) {
-        req.io.to(receiverSocketId).emit('receive_message',{message: populatedMessage});
+        req.io.to(receiverSocketId).emit('receive_message', populatedMessage);
        // message.messageStatus = "read";//delivered
         //await message.save();
     }
