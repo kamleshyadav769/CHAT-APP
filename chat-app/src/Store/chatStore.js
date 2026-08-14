@@ -178,7 +178,10 @@ try{
     const {data}= await axiosInstance.get(`/chats/conversations/${conversationId}/messages`);
    const responseData= data.data || data ||[];
    const messageArray=Array.isArray(responseData)?responseData:responseData.messages||[];
-
+    // //after fetching messages, we can also check the online status of participants in this conversation(mark unread messages as read and update online status)
+    const { markMessagesAsRead } = get();
+    markMessagesAsRead();
+    
     set({messages:messageArray,
         currentConversation:conversationId,
         loading:false,
@@ -186,9 +189,7 @@ try{
         
      });
    
-// //after fetching messages, we can also check the online status of participants in this conversation(mark unread messages as read and update online status)
- const{markMessagesAsRead}=get();
-  markMessagesAsRead();
+
 
     return messageArray;
 
