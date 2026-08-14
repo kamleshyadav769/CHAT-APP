@@ -95,7 +95,7 @@ console.log("unread count is", unreadCount);
     // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver._id),
     // // console.log("logged in user ka id ", contact?.conversation?.lastMessage?.receiver),
     // // console.log("logged in user id", user?._id),
-     console.log("unread count is of contact", contact?.conversation?.unreadCount||"no unread count"),
+   //  console.log("unread count is of contact", contact?.conversation?.unreadCount||"no unread count"),
 
 
     <motion.div key={contact._id} 

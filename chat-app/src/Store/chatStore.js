@@ -32,11 +32,36 @@ export const useChatStore=create((set,get)=>({
         socket.off("reaction_update");
 
         // //listen for incoming messages
-         socket.on("receive_message",({message})=>{
+      /*   socket.on("receive_message",({message})=>{
         console.log("🔥🔥 RECEIVE MESSAGE SOCKET EVENT:", message);
             get().receiveMessage(message);
          });
-        
+        */
+        socket.on(
+            "receive_message",
+            ({ message, conversationId, unreadCount }) => {
+                console.log(
+                    "🔥 RECEIVE MESSAGE SOCKET EVENT:",
+                    message
+                );
+                console.log(
+                    "🔥 RECEIVE conversationid SOCKET EVENT:",
+                    conversationId
+                );
+                console.log(
+                    "🔥 RECEIVE unreadCount SOCKET EVENT:",
+                    unreadCount
+                );
+
+
+                get().receiveMessage(
+                    message,
+                    conversationId,
+                    unreadCount
+                );
+            }
+        );
+
     //     //confirmation of message sent or delivery
     //     socket.on("message_send",({message})=>{
     // set(state=>({
@@ -259,7 +284,7 @@ try{
 },
 
 
-        receiveMessage:(message)=>{
+        receiveMessage:(message,conversationId,unreadCount)=>{
             if(!message) return;
 
             const {currentConversation,currentUser,messages}=get();
@@ -287,8 +312,8 @@ try{
                         return {
                             ...conv,
                             lastMessage:message,
-                            unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
-                           // unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
+                           // unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                            unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
                     return conv;
