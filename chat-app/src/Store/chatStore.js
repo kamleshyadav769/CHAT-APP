@@ -307,7 +307,7 @@ try{
                             ...conv,
                             lastMessage:message,
                           //  unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ?(conv.unreadCount||0)+1:conv.unreadCount||0
-                            unreadCount: (String(message?.receiver?._id) === String(currentUser?._id)) ?( String(message.conversation) === String(currentConversation) ?0 : (conv.unreadCount || 0) + 1) : conv.unreadCount||0
+                            unreadCount: (String(message?.receiver?._id) === String(currentUser?._id)) ?( String(message.conversation) === String(currentConversation) ? ((conv.unreadCount || 0) + 1) :0 ): conv.unreadCount||0
                            // unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
