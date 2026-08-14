@@ -13,7 +13,7 @@ export const useChatStore=create((set,get)=>({
     error:null,//error state for fetching conversations and messages
     onlineUsers:new Map(),//map of online users with their socket ids
     typingUsers:new Map(),//map to track which users are currently typing in which conversations
-    isChatOpen: false,
+    
 
 
     //socket event listener setup
@@ -136,21 +136,7 @@ export const useChatStore=create((set,get)=>({
     setCurrentUser:(user)=>set({currentUser:user}),
 
 
-    openChat: (conversationId) => {
-        set({
-            currentConversation: conversationId,
-            isChatOpen: true
-        });
-    },
-
-    closeChat: () => {
-        set({
-            currentConversation: null,
-            messages: [],
-            isChatOpen: false,
-            typingUsers: new Map() // Clear typing users when chat is closed
-        });
-    },
+   
 
 
     fetchConversations:async()=>{
@@ -169,7 +155,7 @@ export const useChatStore=create((set,get)=>({
         } 
         },
 //fetch messages for a specific conversation
-        fetchMessages:async(conversationId,markAsRead=false)=>{
+        fetchMessages:async(conversationId)=>{
 if(!conversationId) return;
 
 set({loading:true,error:null});
@@ -181,11 +167,10 @@ try{
         loading:false,
        
     });
-if(markAsRead){
 // //after fetching messages, we can also check the online status of participants in this conversation(mark unread messages as read and update online status)
 const{markMessagesAsRead}=get();
  markMessagesAsRead();
-}
+
     return messageArray;
 
 
@@ -274,12 +259,12 @@ try{
         receiveMessage:(message)=>{
             if(!message) return;
 
-            const {currentConversation,currentUser,messages,isChatOpen}=get();
+            const {currentConversation,currentUser,messages}=get();
 
             const messageExists=messages.some(msg=>msg._id===message._id);
             if(messageExists) return;//avoid duplicate messages
 
-            if(isChatOpen && message.conversation===currentConversation){
+            if(message.conversation===currentConversation){
                 set(state=>({
                     messages:[...state.messages,message]
                 }));

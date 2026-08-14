@@ -94,7 +94,7 @@ socket.on("message_read",async({messageIds,senderId})=>{
         const senderSocketId=onlineUsers.get(senderId);
         if (senderSocketId){
             messageIds.forEach(messageId=>{
-                io.to(senderSocketId).emit("message_status_update",{
+                io.to(senderSocketId).emit("message_read",{
                     messageId,
                     messageStatus:"read"
                 })
