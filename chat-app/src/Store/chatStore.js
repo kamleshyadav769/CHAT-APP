@@ -39,7 +39,7 @@ export const useChatStore=create((set,get)=>({
         */
         socket.on(
             "receive_message",
-            ({ message, conversationId, unreadCount }) => {
+            ({ message, conversationId, messageStatus }) => {
                 console.log(
                     "🔥 RECEIVE MESSAGE SOCKET EVENT:",
                     message
@@ -49,15 +49,15 @@ export const useChatStore=create((set,get)=>({
                     conversationId
                 );
                 console.log(
-                    "🔥 RECEIVE unreadCount SOCKET EVENT:",
-                    unreadCount
+                    "🔥 RECEIVE messageStatus SOCKET EVENT:",
+                    messageStatus
                 );
 
 
                 get().receiveMessage(
                     message,
                     conversationId,
-                    unreadCount
+                    messageStatus
                 );
             }
         );
@@ -305,6 +305,7 @@ try{
             console.log("currentUser", currentUser?._id);
             console.log("receiver", message?.receiver?._id);
             console.log("sender", message?.sender?._id);
+            console.log("message status in receive function",message?.messageStatus);
 //update conversation preview and unread count
             set((state)=>{
                 const updatedConversations=state.conversations?.data?.map(conv=>{
