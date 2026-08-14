@@ -295,8 +295,8 @@ try{
             }
             console.log("message", message);
             console.log("currentUser", currentUser?._id);
-           // console.log("receiver", message?.receiver?._id);
-            console.log("receiver", message?.receiver);
+            console.log("receiver", message?.receiver?._id);
+            
             console.log("sender", message?.sender?._id);
             console.log("message status in receive function",message?.messageStatus);
             console.log("currentConversation", currentConversation);
@@ -309,7 +309,7 @@ try{
                         return {
                             ...conv,
                             lastMessage:message,
-                            unreadCount:message?.receiver===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
+                            unreadCount:message?.receiver?._id===currentUser?._id?(conv.unreadCount||0)+1:conv.unreadCount||0
                            // unreadCount: message?.receiver?._id === currentUser?._id && message.conversation === currentConversation ? 0 :(message.conversation === currentConversation)? unreadCount:conv.unreadCount
                         }
                     }
