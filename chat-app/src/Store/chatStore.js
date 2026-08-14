@@ -321,9 +321,7 @@ try{
                 };
             });
 
-            if(message?.receiver?._id===currentUser?._id&&message.conversation===currentConversation){
-                get().markMessagesAsRead();
-            }
+            
         
         },
 
