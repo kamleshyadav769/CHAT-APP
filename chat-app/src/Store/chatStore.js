@@ -43,6 +43,15 @@ export const useChatStore=create((set,get)=>({
                     "🔥 RECEIVE MESSAGE SOCKET EVENT:",
                     message
                 );
+                console.log(
+                    "🔥 RECEIVE conversationid SOCKET EVENT:",
+                    conversationId
+                );
+                console.log(
+                    "🔥 RECEIVE unreadCount SOCKET EVENT:",
+                    unreadCount
+                );
+                
 
                 get().receiveMessage(
                     message,
