@@ -321,7 +321,9 @@ try{
                 };
             });
 
-            
+            if (String(message?.receiver?._id) === String(currentUser?._id) && (String(message.conversation) === String(currentConversation))) {
+                     get().markMessagesAsRead();
+            }
         
         },
 
